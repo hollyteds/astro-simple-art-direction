@@ -1,0 +1,104 @@
+---
+import { getImageAsset } from '../renderers/getImageAsset.ts';
+import { generateSrcset } from '../renderers/generateSrcset.ts';
+
+interface Props {
+  style? : string;
+  src: src;
+  artDirectives? : artDirective[];
+  alt? : string;
+  loading?: loading;
+  class? : string;
+  decoding? : decoding;
+  formats? : format[];
+}
+
+const { 
+  style,
+  src,
+  artDirectives,
+  alt = '',
+  loading = 'lazy',
+  class: className,
+  formats = ['avif', 'webp'],
+  decoding = 'auto'
+} = Astro.props;
+
+// Fetch priority for the image
+const fetchpriority : fetchpriority = (loading === 'eager') ? 'high' : null;
+
+// Get the main image asset
+const image: assets = await getImageAsset(src, formats);
+
+if(!image) return;
+
+// Fetch images for different media queries
+let mediaImages: any = [];
+if(artDirectives) {
+  for( const subSrc of artDirectives ) {
+    const initialProperties: {
+      media: string;
+    } = {
+      media: subSrc.media,
+    }
+    mediaImages.push({ ...initialProperties, ...await getImageAsset( subSrc, formats) });
+  }
+}
+
+---
+<picture>
+  { mediaImages && mediaImages.length > 0 &&
+    <>
+    { mediaImages.map( (mediaImage: any) => (
+      <> 
+        { !mediaImage.isSvg &&
+          <>
+            { formats.map ( (format: format) => (
+              <source
+                media={mediaImage.media}
+                width={mediaImage.width}
+                height={mediaImage.height}
+                srcset={generateSrcset(mediaImage[format])}
+                sizes={mediaImage.sizes}
+                type={"image/" + format}
+              />
+              )
+            )}
+          </>
+        }
+      </>
+      <source
+        media={mediaImage.media}
+        width={mediaImage.width}
+        height={mediaImage.height}
+        srcset={ mediaImage.isSvg ? mediaImage.defaultFormat[1].src : generateSrcset(mediaImage.defaultFormat)}
+        sizes={mediaImage.sizes}
+      />
+    ))}
+    </>
+  }
+  { !image.isSvg && 
+    <>
+      { formats.map( (format: format) => (
+        <source
+          srcset={generateSrcset(image[format])}
+          sizes={image.sizes}
+          type={"image/" + format}
+        />
+      ))}
+    </>
+  }
+  <img
+    width={image.width}
+    height={image.height}
+    src={image.defaultFormat[1].src}
+    srcset={!image.isSvg ? generateSrcset(image.defaultFormat): undefined }
+    sizes={!image.isSvg ? image.sizes : undefined }
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={fetchpriority}
+    alt={alt}
+    style={style}
+    class={className}
+  />
+</picture>
