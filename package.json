@@ -1,7 +1,7 @@
 {
-  "name": "@hollyteds/astro-simple-art-direction",
+  "name": "astro-simple-art-direction",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple art direction for Astro.",
   "author": "Hollyteds",
   "license": "MIT",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.3.1",
-    "astro": "^3.6.4",
+    "astro": "^4.0.1",
     "jest": "^29.7.0",
     "typescript": "^5.3.2"
   }

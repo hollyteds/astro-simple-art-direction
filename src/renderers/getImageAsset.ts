@@ -14,9 +14,7 @@ export const getImageAsset: Function = async (
   const images = import.meta.glob('/src/images/**/*');
 
   try {
-    const target: {
-      default: ImageMetadata
-    } = await images[`/src/images/${file}`]();
+    const target:any = await images[`/src/images/${file}`]();
     const image: ImageMetadata = target.default;
     const isSvg : boolean = image.format === 'svg'
 

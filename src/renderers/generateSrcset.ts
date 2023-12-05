@@ -1,8 +1,8 @@
 /**
  * Generates the srcset string for a given array of images.
  * 
- * @param images - An array of images.
- * @returns The srcset string.
+ * @param {array} images - An array of images.
+ * @returns {string} The srcset string.
  */
 export const generateSrcset: Function = (images: ImageMetadata[]) => {
   

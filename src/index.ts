@@ -1,5 +1,4 @@
 // @ts-expect-error
-export { default as BackgroundPicture } from "./component/BackgroundPicture.astro";
+import Picture from './components/Picture.astro';
 
-// @ts-expect-error
-export { default as Picture } from "./component/Picture.astro";
+export default Picture;
