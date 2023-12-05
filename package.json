@@ -1,10 +1,24 @@
 {
-  "name": "astro-simple-art-direction",
+  "name": "@hollyteds/astro-simple-art-direction",
   "type": "module",
   "version": "0.0.1",
   "description": "A simple art direction for Astro.",
   "author": "Hollyteds",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hollyteds/astro-simple-art-direction.git"
+  },
+  "keywords": [
+    "astro",
+    "withastro",
+    "astro-component",
+    "astro-integration"
+  ],
+  "bugs": {
+    "url": "https://github.com/hollyteds/astro-simple-art-direction/issues"
+  },
+  "homepage": "https://github.com/hollyteds/astro-simple-art-direction/#readme",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
