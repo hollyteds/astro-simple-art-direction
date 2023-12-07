@@ -1,3 +1,1 @@
-export default "./src";
-
-
+export { Picture, BackgroundPicture, BackgroundImage } from './src';

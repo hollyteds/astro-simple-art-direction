@@ -1,0 +1,74 @@
+---
+import Picture from '../components/Picture.astro';
+
+interface Props {
+  TagName?: tagName;
+  class: string;
+  size? : {
+    width: width;
+    height: height;
+  };
+  src: src;
+  artDirectives? : artDirective[];
+  alt? : string;
+  loading?: loading;
+  formats? : format[];
+  objectFit? : objectFit;
+  style? : string;
+}
+
+const {
+  TagName = "div",
+  class: className,
+  style,
+  objectFit = 'cover', 
+  size = { 
+    width: '100%',
+    height: '100%'
+  },
+  ...imageProps
+}  = Astro.props;
+
+const { width, height } = size;
+
+---
+<TagName class:list={[ 'bgp',className ]} style={style}>
+  <figure aria-hidden="true">
+    <Picture {...imageProps}/>
+  </figure>
+  <div class="bgp-inner">
+    <slot />
+  </div>
+</TagName>
+<style lang="scss" define:vars={{ 
+  imageWidth: width,
+  imageHeight: height,
+  attachment: objectFit
+}}>
+  .bgp {
+    position: relative;
+    z-index: 0;
+  }
+  .bgp-inner {
+    position: relative;
+    z-index: 1;
+  }
+  figure {
+    position: absolute;
+    top:0;
+    left:0;
+    z-index: -1;
+    width:100%;
+    height:100%;
+    pointer-events: none;
+
+    :global(img) {
+      display: flex;
+      width: var(--imageWidth);
+      height: var(--imageHeight);
+      object-fit: var(--attachment);
+      justify-content: center;
+      align-items: center;
+    }
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+/**
+ * AddBackground Component
+ * 背景画像付の
+ */
+
+import { getBackground } from '../renderers/getBackground.ts';
+
+interface Props {
+	TagName?: tagName;
+	src: src;
+	format?: format;
+	class?: string;
+}
+
+const { 
+	TagName = "div",
+	src,
+	format = "jpg",
+	class:className, 
+	...props
+} = Astro.props;
+
+const backgroundImage = await getBackground(src, format);
+---
+<TagName {...props} class={className} style={`background-image: url(${backgroundImage});`}>
+  <slot/>
+</TagName>

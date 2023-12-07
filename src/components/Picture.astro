@@ -13,6 +13,10 @@ interface Props {
   formats? : format[];
 }
 
+interface mediaImages extends assets {
+  media: string
+}
+
 const { 
   style,
   src,
@@ -33,7 +37,7 @@ const image: assets = await getImageAsset(src, formats);
 if(!image) return;
 
 // Fetch images for different media queries
-let mediaImages: any = [];
+let mediaImages :mediaImages[] = [];
 if(artDirectives) {
   for( const subSrc of artDirectives ) {
     const initialProperties: {
@@ -98,7 +102,7 @@ if(artDirectives) {
     decoding={decoding}
     fetchpriority={fetchpriority}
     alt={alt}
-    style={style}
     class={className}
+    style={style}
   />
 </picture>
