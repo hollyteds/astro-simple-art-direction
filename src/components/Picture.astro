@@ -51,53 +51,47 @@ if(artDirectives) {
 
 ---
 <picture>
-  { mediaImages && mediaImages.length > 0 &&
+  {mediaImages && mediaImages.length > 0 
+    && mediaImages.map((mediaImage: any) => (
     <>
-    { mediaImages.map( (mediaImage: any) => (
-      <> 
-        { !mediaImage.isSvg &&
-          <>
-            { formats.map ( (format: format) => (
-              <source
-                media={mediaImage.media}
-                width={mediaImage.width}
-                height={mediaImage.height}
-                srcset={generateSrcset(mediaImage[format])}
-                sizes={mediaImage.sizes}
-                type={"image/" + format}
-              />
-              )
-            )}
-          </>
-        }
-      </>
+      {!mediaImage.isSvg
+        && formats.map((format: format) => (
+        <source
+          media={mediaImage.media}
+          width={mediaImage.width}
+          height={mediaImage.height}
+          srcset={generateSrcset(mediaImage[format])}
+          sizes={mediaImage.sizes}
+          type={"image/" + format}
+        />
+      ))}
       <source
         media={mediaImage.media}
         width={mediaImage.width}
         height={mediaImage.height}
-        srcset={ mediaImage.isSvg ? mediaImage.defaultFormat[1].src : generateSrcset(mediaImage.defaultFormat)}
+        srcset={
+          mediaImage.isSvg 
+          ? mediaImage.defaultFormat[1].src 
+          : generateSrcset(mediaImage.defaultFormat)
+        }
         sizes={mediaImage.sizes}
       />
-    ))}
     </>
-  }
-  { !image.isSvg && 
-    <>
-      { formats.map( (format: format) => (
-        <source
-          srcset={generateSrcset(image[format])}
-          sizes={image.sizes}
-          type={"image/" + format}
-        />
-      ))}
-    </>
-  }
+  ))}
+  { !image.isSvg 
+    && formats.map((format: format) => (
+    <source
+      srcset={generateSrcset(image[format])}
+      sizes={image.sizes}
+      type={"image/" + format}
+    />
+  ))}
   <img
     width={image.width}
     height={image.height}
     src={image.defaultFormat[1].src}
-    srcset={!image.isSvg ? generateSrcset(image.defaultFormat): undefined }
-    sizes={!image.isSvg ? image.sizes : undefined }
+    srcset={!image.isSvg ? generateSrcset(image.defaultFormat) : undefined}
+    sizes={!image.isSvg ? image.sizes : undefined}
     loading={loading}
     decoding={decoding}
     fetchpriority={fetchpriority}

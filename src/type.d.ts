@@ -11,6 +11,7 @@ declare type format =
   | 'tiff'
   | 'webp'
   | 'gif'
+  | 'svg'
 
 /**
  * Represents the available HTML tag names.
@@ -80,7 +81,6 @@ declare type objectFit =
   | 'scale-down'
   | null
 
-
 /**
  * Represents the src interface.
  */
@@ -115,4 +115,5 @@ declare interface assets {
   tiff?: GetImageResult,
   webp?: GetImageResult,
   gif?: GetImageResult,
+  svg?: GetImageResult
 }
