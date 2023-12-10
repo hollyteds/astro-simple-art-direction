@@ -3,15 +3,11 @@ import { getImage } from "astro:assets";
 
 /**
  * Get format images based on the provided image, format, and source dimensions.
- * @param {object} image - The image object.
- * @param {string} format - The desired format of the images.
- * @param {number} width - Width of the image
- * @returns {object}An array of format images.
  */
-export const getFormatImages: Function = async (
+export const getFormatImages = async (
   image: ImageMetadata,
   format: string,
-  width: number,
+  width: width,
 ) => {
   
   // Convert environment variable to a number

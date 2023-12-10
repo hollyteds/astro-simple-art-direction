@@ -63,12 +63,12 @@ declare type loading = 'eager' | 'lazy' | undefined | null;
 /**
  * Represents the available width options.
  */
-declare type width = number | string | undefined | null;
+declare type width = number;
 
 /**
  * Represents the available height options.
  */
-declare type height = number | string | undefined | null;
+declare type height = number;
 
 /**
  * Represents the available object fit options.
@@ -79,7 +79,6 @@ declare type objectFit =
   | 'cover'
   | 'none'
   | 'scale-down'
-  | null
 
 /**
  * Represents the src interface.
@@ -117,3 +116,10 @@ declare interface assets {
   gif?: GetImageResult,
   svg?: GetImageResult
 }
+
+/**
+ * For the 'size' prop of the backgroundPicture.
+ */
+declare type unit = 'px' | '%' | 'em' | 'rem' | 'vw' | 'vh' | 'vmin' | 'vmax' | 'svw' | 'svh' | 'lvw' | 'lvh' | 'dvw' | 'dvh';
+declare type LengthUnit = `${number}${unit}`;
+declare type sizeLength = LengthUnit | 'auto';

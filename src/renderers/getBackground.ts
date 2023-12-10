@@ -2,15 +2,11 @@ import { getImage } from "astro:assets";
 
 /**
  * This function retrieves the background of an image.
- * 
- * @param {any} src - The source of the image.
- * @param {string} format - The format of the image.
- * @returns {string} The URL of the image.
  */
-export const getBackground: Function = async (
+export const getBackground = async (
   src: {
     file: string,
-    width?: number,
+    width?: width,
     height?: number
   },
   format: string

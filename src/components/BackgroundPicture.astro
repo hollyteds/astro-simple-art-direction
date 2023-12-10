@@ -1,38 +1,43 @@
 ---
+import '../type.d.ts';
+import type { HTMLAttributes } from 'astro/types';
 import Picture from '../components/Picture.astro';
 
-interface Props {
+// @ts-expect-error
+interface Props extends HTMLAttributes<'HTMLElement'>{
   TagName?: tagName;
-  class: string;
   size? : {
-    width: width;
-    height: height;
+    width: sizeLength;
+    height: sizeLength;
   };
+  objectFit? : objectFit;
   src: src;
   artDirectives? : artDirective[];
   alt? : string;
   loading?: loading;
   formats? : format[];
-  objectFit? : objectFit;
-  style? : string;
 }
 
 const {
   TagName = "div",
-  class: className,
-  style,
-  objectFit = 'cover', 
   size = { 
     width: '100%',
     height: '100%'
   },
-  ...imageProps
-}  = Astro.props;
+  objectFit = 'cover',
+  src,
+  artDirectives,
+  alt,
+  loading,
+  formats,
+  ...parentProps
+} = Astro.props;
 
 const { width, height } = size;
+const imageProps = { src, artDirectives, alt, loading, formats}
 
 ---
-<TagName class:list={[ 'bgp', className ]} style={style}>
+<TagName {...parentProps} class:list={[ 'bgp']}>
   <figure aria-hidden="true">
     <Picture {...imageProps}/>
   </figure>
