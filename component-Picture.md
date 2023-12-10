@@ -65,7 +65,7 @@ This is the case of specifying art direction.
 
 Below is the list of props that the ```<Picture />``` component accepts. Only the src props are required.
 
-### **`src`**
+### **src**
 
 **Type:**
 
@@ -92,7 +92,7 @@ The following is an example of changing to the "assets" directory.
 DEFAULT_IMAGE_DIRECTORY=assets
 ```
 
-### **`artDirectives`**
+### **artDirectives**
 
 **Type:**
 
@@ -108,7 +108,7 @@ The `artDirectives` prop specifies images for art direction, and its input is op
 
 It extends the type from the “src” option and includes property “media”. Please note that it is in array format, and the output follows the order of the specified images.
 
-## **`alt`**
+### **alt**
 
 **Type:** `string`
 
@@ -116,7 +116,7 @@ It extends the type from the “src” option and includes property “media”.
 
 The `artDirectives` alternative text to display if the image fails to load.
 
-## **`formats`**
+### **formats**
 
 **Type:** `(| "heic" | "heif" | "avif" | "jpg" | "jpeg" | "png" | "tiff" | "webp" | "gif" | "SVG" )[]`;
 
@@ -124,7 +124,7 @@ The `artDirectives` alternative text to display if the image fails to load.
 
 The `formats` prop specifies, in an array, the image formats to output primarily as next-generation formats. The original image format is always outputted by default and therefore does not need to be specified.
 
-## **`loading`**
+### **loading**
 
 **Type:** `"lazy" | "eager" | "auto" | null`
 
@@ -132,7 +132,7 @@ The `formats` prop specifies, in an array, the image formats to output primarily
 
 The prop of the `loading` attribute of the generated `<img />` element.
 
-## **`decoding`**
+### **decoding**
 
 **Type:** `"async" | "sync" | "auto" | null`
 
@@ -140,7 +140,7 @@ The prop of the `loading` attribute of the generated `<img />` element.
 
 The prop of the `decoding` attribute of the generated `<img />` element.
 
-## **`class`**
+### **class**
 
 **Type:** `string`
 
@@ -148,7 +148,7 @@ The prop of the `decoding` attribute of the generated `<img />` element.
 
 The prop of the `class` attribute of the generated `<img />` element.
 
-## **`style`**
+### **style**
 
 **Type:** `string`
 

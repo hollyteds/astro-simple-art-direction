@@ -43,9 +43,7 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
 
 Below is the list of props that the ```<BackgroundPicture />``` component accepts. Only the src props are required.
 
-
-
-### **`TagName`**
+### **TagName**
 
 **Type:**
 
@@ -61,7 +59,7 @@ The `TagName` prop specifies the tag that wraps the background image and inner e
 
 The props `src`, `artDirectives`, `alt`, `loading`, and `formats` follow the same setup method as the "Picture" component.
 
-## **`size.width`** , **`size.height`**
+### **size.width** , **size.height**
 
 **Type:** units such as px, %, em, rem, vw, vh, vmin, vmax, svw, svh, lvw, lvh, dvw, dvh, in addition to 'auto'.
 
@@ -69,7 +67,7 @@ The props `src`, `artDirectives`, `alt`, `loading`, and `formats` follow the sam
 
 This `size` prop corresponds to the 'background-size' in CSS. It's set in an object format to define width and height.
 
-## **`objectFit`**
+### **objectFit**
 
 **Type:** `"fill" | "contain" | "cover" | "none" | "scale-down" | "null"`
 
@@ -77,4 +75,4 @@ This `size` prop corresponds to the 'background-size' in CSS. It's set in an obj
 
 The `objectFit` prop specifies the object-fit for the background image.
 
-## Other
+### Other
