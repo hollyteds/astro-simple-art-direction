@@ -1,7 +1,7 @@
 {
   "name": "astro-simple-art-direction",
   "type": "module",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "description": "A simple art direction for Astro.",
   "author": "Hollyteds",
   "license": "MIT",
@@ -11,9 +11,13 @@
   },
   "keywords": [
     "astro",
-    "withastro",
     "astro-component",
-    "astro-integration"
+    "art-direction",
+    "image",
+    "responsive",
+    "Picture",
+    "BackgroundImage",
+    "BackgroundPicture"
   ],
   "bugs": {
     "url": "https://github.com/hollyteds/astro-simple-art-direction/issues"
