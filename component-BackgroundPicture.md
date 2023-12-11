@@ -41,7 +41,7 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
 
 ## **Component Props**
 
-Below is the list of props that the ```<BackgroundPicture />``` component accepts. Only the src props are required.
+Below is the list of props that the ```<BackgroundImage />``` component accepts. Only the image props are required.
 
 ### **TagName**
 
@@ -55,7 +55,7 @@ Below is the list of props that the ```<BackgroundPicture />``` component accept
 
 The `TagName` prop specifies the tag that wraps the background image and inner elements.
 
-### **`src`** , **`artDirectives`** , **`alt`** , **`loading`** , **`formats`**
+### **src** , **artDirectives** , **alt** , **loading** , **formats**
 
 The props `src`, `artDirectives`, `alt`, `loading`, and `formats` follow the same setup method as the "Picture" component.
 
@@ -75,4 +75,46 @@ This `size` prop corresponds to the 'background-size' in CSS. It's set in an obj
 
 The `objectFit` prop specifies the object-fit for the background image.
 
-### Other
+>[!TIP]
+>The attribute type for this BackgroundPicture component extends `HTMLAttributes<HTMLDivElement>`.
+>It primarily enables the description of the following content.
+>
+>- `aria-*`attributes: Accessibility-related attributes like `aria-hidden`, `aria-labelledby`, etc.
+>- `class`: The class name of the element
+>- `id`: The ID of the element
+>- `style`: An attribute used to directly specify CSS styles
+>- Other standard HTML attributes: `tabIndex`, `title`, etc.
+>
+```tsx
+import { BackgroundPicture } from 'astro-simple-art-direction';
+
+<BackgroundPicture
+  TagName="section" 
+  id="greeting"
+  class="p-section"
+  image={{ 
+    src: {
+      file:"my-image.jpg",
+      width: 1000,
+      height: 800
+    }
+  }}
+/>
+  <h1>astro-simple-art-direction</h1>
+</BackgroundPicture>
+```
+
+```html
+<!-- Output Results -->
+<section id="greeting" data-astro-hash class="bgp p-section">
+  <figure aria-hidden="true" data-astro-hash style="--imageWidth: 100%;--imageHeight: 100%;--attachment: cover;">
+    <picture>
+      <source srcset="./_astro/my-image.hash.avif 1x,./_astro/my-image.hash.avif 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/avif">
+      <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/webp"> <img width="500" height="2000" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 500px) 100vw, 500px" loading="lazy" decoding="auto" alt="">
+    </picture>
+  </figure>
+  <div class="bgp-inner" data-astro-hash style="--imageWidth: 100%;--imageHeight: 100%;--attachment: cover;">
+    <h1>astro-simple-art-direction</h1>
+  </div>
+</section>
+```

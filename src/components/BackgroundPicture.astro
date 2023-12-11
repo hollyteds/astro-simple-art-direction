@@ -4,7 +4,7 @@ import type { HTMLAttributes } from 'astro/types';
 import Picture from '../components/Picture.astro';
 
 // @ts-expect-error
-interface Props extends HTMLAttributes<'HTMLElement'>{
+interface Props extends HTMLAttributes<'HTMLDivElement'>{
   TagName?: tagName;
   size? : {
     width: sizeLength;
