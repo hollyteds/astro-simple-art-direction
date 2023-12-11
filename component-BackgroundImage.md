@@ -7,7 +7,7 @@ This Astro component specifies the background image using the style attribute.
 This is the simplest method.
 
 ```tsx
-import { Picture } from 'astro-simple-art-direction';
+import { BackgroundImage } from 'astro-simple-art-direction';
 
 <BackgroundImage TagName="section" image={ {src:{file:"my-image.jpg", width:500, height:2000}} }>
   <h1>astro-simple-art-direction</h1>
@@ -48,7 +48,7 @@ The `TagName` prop specifies the tag that wraps the background image and inner e
 >- Other standard HTML attributes: `tabIndex`, `title`, etc.
 
 ```tsx
-import { Picture } from 'astro-simple-art-direction';
+import { BackgroundImage } from 'astro-simple-art-direction';
 
 <BackgroundImage TagName="section" id="about" class="p-section" image={ {src:{file:"my-image.jpg", width:500, height:2000}} }>
   <h1>astro-simple-art-direction</h1>
