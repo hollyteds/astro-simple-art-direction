@@ -84,7 +84,7 @@ The `objectFit` prop specifies the object-fit for the background image.
 >- `id`: The ID of the element
 >- `style`: An attribute used to directly specify CSS styles
 >- Other standard HTML attributes: `tabIndex`, `title`, etc.
->
+
 ```tsx
 import { BackgroundPicture } from 'astro-simple-art-direction';
 
