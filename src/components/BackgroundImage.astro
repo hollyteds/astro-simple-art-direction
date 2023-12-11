@@ -4,7 +4,7 @@ import { getBackground } from '../renderers/getBackground.ts';
 import type { HTMLAttributes } from 'astro/types';
 
 // @ts-expect-error
-interface Props extends HTMLAttributes<'HTMLElement'> {
+interface Props extends HTMLAttributes<'HTMLDivElement'> {
 	TagName?: tagName;
 	image: {
 		src: src;
