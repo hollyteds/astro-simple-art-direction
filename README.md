@@ -16,8 +16,8 @@ npm install astro-simple-art-direction
 
 - Addition of two environment variables.
 
-  - [FALLBACK_FORMAT](FALLBACK_FORMAT) 
-  - [DEFAULT_GENERATE_FORMAT](DEFAULT_GENERATE_FORMAT)
+  - [FALLBACK_FORMAT](###FALLBACK_FORMAT) 
+  - [DEFAULT_GENERATE_FORMAT](###DEFAULT_GENERATE_FORMAT)
 
 - Add `position` parameter to [BackgroundPicture](/component-BackgroundPicture.md) component.
 
