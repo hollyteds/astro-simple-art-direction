@@ -14,10 +14,6 @@ interface Props {
   formats? : format[];
 }
 
-interface mediaImages extends assets {
-  media: string
-}
-
 const { 
   style,
   src,
@@ -25,79 +21,87 @@ const {
   alt = '',
   loading = 'lazy',
   class: className,
-  formats = ['avif', 'webp'],
-  decoding = 'auto'
+  decoding = 'auto',
+  formats,
+  ...props
 } = Astro.props;
+
+
+// Define the output image format from arguments or environment variables. Defaults to avif and webp.
+const envGenarateFormat: format[] = formats ?? await import.meta.env.DEFAULT_GENERATE_FORMAT.split(' ') ?? ['avif', 'webp'];
+
+const image: assets = await getImageAsset(src, envGenarateFormat);
+if(!image) return;
 
 // Fetch priority for the image
 const fetchpriority : fetchpriority = (loading === 'eager') ? 'high' : null;
 
-// Get the main image asset
-const image: assets = await getImageAsset(src, formats);
-
-if(!image) return;
-
 // Fetch images for different media queries
-let mediaImages :mediaImages[] = [];
+let mediaImages :assets[] = [];
 if(artDirectives) {
-  for( const subSrc of artDirectives ) {
-    const initialProperties: {
-      media: string;
-    } = {
-      media: subSrc.media,
-    }
-    mediaImages.push({ ...initialProperties, ...await getImageAsset( subSrc, formats) });
+  for( const src of artDirectives ) {
+    const asset = await getImageAsset( src, envGenarateFormat);
+    mediaImages.push({ ...asset, attributes: { ...asset.attributes, media: src.media } });
   }
 }
 
 ---
 <picture>
   {mediaImages && mediaImages.length > 0 
-    && mediaImages.map((mediaImage: any) => (
+    && mediaImages.map((mediaImage: assets) => (
     <>
-      {!mediaImage.isSvg
-        && formats.map((format: format) => (
+      { mediaImage.defaultFormat !== 'svg'
+        && envGenarateFormat.map((format: format) => 
+        (mediaImage.defaultFormat !== format) && (
         <source
-          media={mediaImage.media}
-          width={mediaImage.width}
-          height={mediaImage.height}
+          {...mediaImage.attributes}
           srcset={generateSrcset(mediaImage[format])}
-          sizes={mediaImage.sizes}
           type={"image/" + format}
         />
-      ))}
+        ))
+      }
       <source
-        media={mediaImage.media}
-        width={mediaImage.width}
-        height={mediaImage.height}
+        {...mediaImage.attributes}
         srcset={
-          mediaImage.isSvg 
-          ? mediaImage.defaultFormat[1].src 
-          : generateSrcset(mediaImage.defaultFormat)
+          mediaImage.defaultFormat === 'svg'
+          ? mediaImage.svg[1].src
+          : generateSrcset(mediaImage[mediaImage.defaultFormat])
         }
-        sizes={mediaImage.sizes}
       />
     </>
   ))}
-  { !image.isSvg 
-    && formats.map((format: format) => (
-    <source
-      srcset={generateSrcset(image[format])}
-      sizes={image.sizes}
-      type={"image/" + format}
-    />
-  ))}
+  { image.defaultFormat !== 'svg'
+    && envGenarateFormat.map((format: format) => (
+      (image.defaultFormat !== format) && (
+        <source
+          {...{...image.attributes, sizes: undefined}}
+          srcset={generateSrcset(image[format])}
+          type={"image/" + format}
+        />
+      )
+  ))
+  }
   <img
-    width={image.width}
-    height={image.height}
-    src={image.defaultFormat[1].src}
-    srcset={!image.isSvg ? generateSrcset(image.defaultFormat) : undefined}
-    sizes={!image.isSvg ? image.sizes : undefined}
+    {...{
+      ...image.attributes,
+        sizes: (
+        image.defaultFormat !== 'svg' 
+        ? image.attributes.sizes 
+        : undefined
+      )
+    }}
+    src={image[image.defaultFormat][1].src}
+    srcset={
+      image.defaultFormat !== 'svg' 
+      ? generateSrcset(image[image.defaultFormat]) 
+      : undefined
+    }
     loading={loading}
     decoding={decoding}
     fetchpriority={fetchpriority}
     alt={alt}
     class={className}
     style={style}
+    {...props}
   />
 </picture>

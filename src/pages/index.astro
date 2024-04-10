@@ -1,0 +1,80 @@
+---
+/**
+ * test 
+ */
+import Picture from "../components/Picture.astro";
+import BackgroundImage from "../components/BackgroundImage.astro";
+import BackgroundPicture from "../components/BackgroundPicture.astro";
+---
+<html lang="ja">
+  <head>
+    <title>Astro simple art direction</title>
+    <meta name="description" content="A simple art direction for Astro." />
+  </head>
+  <body>
+    <Picture
+      src={{
+        file: "test.jpg",
+        width: 500,
+        height: 500,
+      }}
+      artDirectives={[
+        {
+          media: "(max-width: 767px)",
+          file: "test.png",
+          width: 300,
+          height: 150,
+        },
+      ]}
+    />
+    <Picture
+    aria-hidden="true"
+    src={{
+      file: "test.svg",
+      width: 500,
+      height: 500,
+    }}
+    artDirectives={[
+      {
+        media: "(max-width: 767px)",
+        file: "test.svg",
+        width: 300,
+        height: 150,
+      },
+    ]}
+  />
+  <BackgroundPicture
+    size={{ width: "100%", height: "100%" }}
+    TagName="div"
+    position="center"
+    src={{
+      file: "test.jpg",
+      width: 500,
+      height: 500,
+    }}
+    artDirectives={[
+      {
+        media: "(max-width: 767px)",
+        file: "test.jpg",
+        width: 200,
+        height: 200,
+      },
+    ]}
+    loading="eager"
+  >
+  <h1>This is a test</h1>
+  </BackgroundPicture>
+  <BackgroundImage
+    image={
+      {src:{
+        file: "test.png",
+        width: 300,
+        height: 150,
+      },
+      format:"avif"
+    }}
+  >
+  <h1>This is a test</h1>
+  </BackgroundImage>
+  </body>
+</html>

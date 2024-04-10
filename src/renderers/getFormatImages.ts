@@ -6,7 +6,7 @@ import { getImage } from "astro:assets";
  */
 export const getFormatImages = async (
   image: ImageMetadata,
-  format: string,
+  format: format,
   width: width,
 ) => {
   

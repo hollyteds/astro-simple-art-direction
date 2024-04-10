@@ -75,9 +75,19 @@ This `size` prop corresponds to the 'background-size' in CSS. It's set in an obj
 
 The `objectFit` prop specifies the object-fit for the background image.
 
->[!TIP]
->The attribute type for this BackgroundPicture component extends `HTMLAttributes<HTMLDivElement>`.
->It primarily enables the description of the following content.
+### **position**
+
+**Type:** `| "top" | "bottom" | "left" | "right" | "center" | "top left" | "top right" | "bottom left" | "bottom right"`
+
+**Default:** `"center"`
+
+The `position` prop specifies the reference point for the background image, which can be specified with Keyword values, values or Edge offsets values.
+
+[See MDN - object-position]
+
+[See MDN - object-position]: https://developer.mozilla.org/en-US/docs/Web/CSS/object-position/
+
+>[!TIP] The attribute type of this BackgroundPicture component is an extension of HTMLAttributes<HTMLDivElement>. It primarily allows the description of the following content.
 >
 >- `aria-*`attributes: Accessibility-related attributes like `aria-hidden`, `aria-labelledby`, etc.
 >- `class`: The class name of the element

@@ -10,7 +10,9 @@ interface Props extends HTMLAttributes<'HTMLDivElement'>{
     width: sizeLength;
     height: sizeLength;
   };
+  class? : string;
   objectFit? : objectFit;
+  position? : objectPosition;
   src: src;
   artDirectives? : artDirective[];
   alt? : string;
@@ -24,12 +26,14 @@ const {
     width: '100%',
     height: '100%'
   },
+  class: className,
   objectFit = 'cover',
   src,
   artDirectives,
   alt,
   loading,
   formats,
+  position = "center",
   ...parentProps
 } = Astro.props;
 
@@ -37,42 +41,44 @@ const { width, height } = size;
 const imageProps = { src, artDirectives, alt, loading, formats}
 
 ---
-<TagName {...parentProps} class:list={[ 'bgp']}>
+<TagName {...parentProps} class:list={ [ className, 'bgp']}>
   <figure aria-hidden="true">
     <Picture {...imageProps}/>
   </figure>
-  <div class="bgp-inner">
+  <div>
     <slot />
   </div>
 </TagName>
-<style lang="scss" define:vars={{ 
+<style define:vars={{
   imageWidth: width,
   imageHeight: height,
-  attachment: objectFit
+  attachment: objectFit,
+  position: position
 }}>
   .bgp {
     position: relative;
   }
-  .bgp-inner {
+  div {
     position: relative;
     z-index: 1;
   }
   figure {
     position: absolute;
+    margin: 0;
     top:0;
     left:0;
     z-index: 0;
     width:100%;
     height:100%;
     pointer-events: none;
-
-    :global(img) {
-      display: flex;
-      width: var(--imageWidth);
-      height: var(--imageHeight);
-      object-fit: var(--attachment);
-      justify-content: center;
-      align-items: center;
-    }
+  }
+  figure :global(img) {
+    display: flex;
+    width: var(--imageWidth);
+    height: var(--imageHeight);
+    object-fit: var(--attachment);
+    object-position: var(--position);
+    justify-content: center;
+    align-items: center;
   }
 </style>

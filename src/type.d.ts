@@ -1,5 +1,5 @@
 /**
- * Represents the available image formats.
+ * Image formats available.
  */
 declare type format =
   | 'heic'
@@ -13,8 +13,18 @@ declare type format =
   | 'gif'
   | 'svg'
 
+  /**
+   * Image formats available as fallback.
+   */
+  declare type fallbackFormat =
+  | 'jpg'
+  | 'jpeg'
+  | 'png'
+  | 'webp'
+  | 'gif'
+
 /**
- * Represents the available HTML tag names.
+ * Available HTML tag.
  */
 declare type tagName =
   | "div"
@@ -46,32 +56,32 @@ declare type tagName =
   | "dd";
 
 /**
- * Represents the available decoding options.
+ * Available decoding options.
  */
 declare type decoding = 'async' | 'auto' | 'sync' | undefined | null;
 
 /**
- * Represents the available fetch priority options.
+ * Available fetch priority options.
  */
 declare type fetchpriority = 'auto' | 'high' | 'low' | undefined | null;
 
 /**
- * Represents the available loading options.
+ * Available loading options.
  */
 declare type loading = 'eager' | 'lazy' | undefined | null;
 
 /**
- * Represents the available width options.
+ * Available width options.
  */
 declare type width = number;
 
 /**
- * Represents the available height options.
+ * Available height options.
  */
 declare type height = number;
 
 /**
- * Represents the available object fit options.
+ * Available object fit options.
  */
 declare type objectFit = 
   | 'fill'
@@ -79,6 +89,24 @@ declare type objectFit =
   | 'cover'
   | 'none'
   | 'scale-down'
+
+/**
+ * Available object position options.
+ */
+declare type objectPosition = 
+  | 'top'
+  | 'bottom'
+  | 'left'
+  | 'right'
+  | 'center'
+  | 'top left'
+  | 'top right'
+  | 'bottom left'
+  | 'bottom right'
+  | `${number}${unit}`
+  | `${number} ${number}`
+  | `${number}${unit} ${number}${unit}`
+  | `${"top" | "bottom"} ${number}${unit} ${"left" | "right"} ${number}${unit}`
 
 /**
  * Represents the src interface.
@@ -90,21 +118,31 @@ declare interface src {
 };
 
 /**
- * Represents the artDirective interface.
+ * Represents the image elements attributes.
+ */
+declare interface imageAttributes {
+  src?: string;
+  srcset?: string;
+  sizes?: string;
+  width: width;
+  height: height;
+  media?: string;
+  type?: string;
+};
+
+/**
+ * ArtDirective interface.
  */
 declare interface artDirective extends src {
   media: string;
 };
 
 /**
- * Represents the assets interface.
+ * Assets interface.
  */
 declare interface assets {
-  isSvg: boolean;
-  width: width;
-  height?: height;
-  sizes: string;
-  defaultFormat: GetImageResult;
+  attributes: imageAttributes;
+  defaultFormat: format;
   heic?: GetImageResult,
   heif?: GetImageResult,
   avif?: GetImageResult,

@@ -24,6 +24,7 @@ pnpm-debug.log*
 .vscode
 
 # test
-/cypress/fixtures/
-/cypress/screenshots/
-/cypress/support/
+cypress/
+cypress.config.js
+src/images/
+src/pages/
