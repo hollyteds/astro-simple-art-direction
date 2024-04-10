@@ -12,6 +12,10 @@ npm install astro-simple-art-direction
 
 ## Chenge log
 
+### 1.0.2
+
+- Added operator for undefined avoidance.
+
 ### 1.0.1
 
 - Addition of two environment variables.

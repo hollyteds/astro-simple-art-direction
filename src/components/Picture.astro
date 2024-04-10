@@ -28,7 +28,7 @@ const {
 
 
 // Define the output image format from arguments or environment variables. Defaults to avif and webp.
-const envGenarateFormat: format[] = formats ?? await import.meta.env.DEFAULT_GENERATE_FORMAT.split(' ') ?? ['avif', 'webp'];
+const envGenarateFormat: format[] = formats ?? await import.meta.env.DEFAULT_GENERATE_FORMAT?.split(' ') ?? ['avif', 'webp'];
 
 const image: assets = await getImageAsset(src, envGenarateFormat);
 if(!image) return;
