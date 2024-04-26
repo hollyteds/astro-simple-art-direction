@@ -1,7 +1,7 @@
 {
   "name": "astro-simple-art-direction",
   "type": "module",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A simple art direction for Astro.",
   "author": "Hollyteds",
   "license": "MIT",

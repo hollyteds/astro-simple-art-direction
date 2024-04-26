@@ -12,6 +12,10 @@ npm install astro-simple-art-direction
 
 ## Chenge log
 
+### 1.0.3
+
+- Added error handling and fine-tuning of type definitions.
+
 ### 1.0.2
 
 - Added operator for undefined avoidance.
