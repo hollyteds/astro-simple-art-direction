@@ -75,7 +75,7 @@ This environment variable defines the image format to be output as fallback. If 
 DEFAULT_GENERATE_FORMAT=avif webp # default : avif webp
 ```
 
-**Type:** `(| "heic" | "heif" | "avif" | "jpg" | "jpeg" | "png" | "tiff" | "webp" | "gif" | "SVG" )[]`;
+**Type:** `(| "heic" | "heif" | "avif" | "jpg" | "jpeg" | "png" | "tiff" | "webp" | "gif" | "svg" )[]`;
 
 This environment variable specifies the output format of the images used in the project as an array. There must be a space between words.
 

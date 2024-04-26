@@ -1,3 +1,4 @@
+import { isImageMetadata } from '../typeGuard.ts';
 import { getImage } from "astro:assets";
 
 /**
@@ -23,15 +24,27 @@ export const getBackground = async (
   const imageDirectory: string = envDirectoryName ? envDirectoryName : 'images';
 
   const images = import.meta.glob(`/src/**/*`);
-  const target: any = await images[`/src/${imageDirectory}/${file}`]();
 
-  const targetImage: ImageMetadata  = target.default
+  try {
+    const target: unknown = await images[`/src/${imageDirectory}/${file}`]();
 
-  const image = await getImage({
-    src: targetImage,
-    width: width,
-    height: height,
-    format: format ?? envFormat ?? targetImage.format
-  });
-	return image.src;
+    if (isImageMetadata(target)) {
+      const targetImage: ImageMetadata = target.default
+
+      const image = await getImage({
+        src: targetImage,
+        width: width,
+        height: height,
+        format: format ?? envFormat ?? targetImage.format
+      });
+
+      return image.src;
+    
+    }
+    
+  } catch (error) {
+    // File is not found.
+    throw new Error(`${imageDirectory}/${file} is not found.`);
+  }
+
 }

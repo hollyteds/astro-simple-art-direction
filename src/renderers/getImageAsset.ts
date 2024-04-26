@@ -1,3 +1,4 @@
+import { isImageMetadata } from '../typeGuard.ts';
 import { getFormatImages } from "./getFormatImages";
 
 /**
@@ -24,35 +25,39 @@ export const getImageAsset: Function = async (src: src, formats: format[]) => {
   const images = import.meta.glob(`/src/**/*`);
 
   try {
-    const target: any = await images[`/src/${imageDirectory}/${file}`]();
-    const image: ImageMetadata = target.default;
+    const target: unknown = await images[`/src/${imageDirectory}/${file}`]();
 
-    const isSvg: boolean = image.format === "svg";
+    if (isImageMetadata(target)) {
+      const image: ImageMetadata = target.default;
 
-    let assets: assets = {
-      attributes: {
-        width: width,
-        height: height,
-        sizes: `(max-width: ${width}px) 100vw, ${width}px`,
-      },
-      defaultFormat: (!isSvg && envFormat) ? envFormat : image.format,
+      const isSvg: boolean = image.format === "svg";
 
-      // Format of the original image other than SVG (but if FALLBACK_FORMAT is specified, it is not processed here as it will be optimised together later).
-      ...( !isSvg && !envFormat ? {
-        [image.format]: await getFormatImages(image, image.format, width)
-      } : {}),
-      // SVG format returns the path as is. Index 0 is skipped on output, so apply 1.
-      ...(isSvg && { svg: { [1]: image } }),
-    };
+      let assets: assets = {
+        attributes: {
+          width: width,
+          height: height,
+          sizes: `(max-width: ${width}px) 100vw, ${width}px`,
+        },
+        defaultFormat: (!isSvg && envFormat) ? envFormat : image.format,
 
-    // Output all specified image formats.
-    if (!isSvg && formats) {
-      for (const format of formats) {
-        assets[format] = await getFormatImages(image, format, width);
+        // Format of the original image other than SVG (but if FALLBACK_FORMAT is specified, it is not processed here as it will be optimised together later).
+        ...( !isSvg && !envFormat ? {
+          [image.format]: await getFormatImages(image, image.format, width)
+        } : {}),
+        // SVG format returns the path as is. Index 0 is skipped on output, so apply 1.
+        ...(isSvg && { svg: { [1]: image } }),
+      };
+
+      // Output all specified image formats.
+      if (!isSvg && formats) {
+        for (const format of formats) {
+          assets[format] = await getFormatImages(image, format, width);
+        }
       }
-    }
 
-    return assets;
+      return assets;
+    }
+    
   } catch (error) {
     // File is not found.
     throw new Error(`${imageDirectory}/${file} is not found.`);
