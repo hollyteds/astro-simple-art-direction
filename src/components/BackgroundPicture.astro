@@ -2,6 +2,7 @@
 import '../type.d.ts';
 import type { HTMLAttributes } from 'astro/types';
 import Picture from '../components/Picture.astro';
+import { Image, imageConfig } from 'astro:assets';
 
 // @ts-expect-error
 interface Props extends HTMLAttributes<'HTMLDivElement'>{
@@ -13,12 +14,32 @@ interface Props extends HTMLAttributes<'HTMLDivElement'>{
   class? : string;
   objectFit? : objectFit;
   position? : objectPosition;
-  src: src;
+  /** @deprecated The "src" property was deprecated in version 1.0.4. Please use the 'image' object instead.*/
+  src?: src;
+  /** @deprecated The "artDirectives" property was deprecated in version 1.0.4. Please use the 'image' object instead.*/
   artDirectives? : artDirective[];
+  /** @deprecated The "alt" property was deprecated in version 1.0.4. Please use the 'image' object instead.*/
   alt? : string;
+  /** @deprecated The "loading" property was deprecated in version 1.0.4. Please use the 'image' object instead.*/
   loading?: loading;
+  /** @deprecated The "formats" property was deprecated in version 1.0.4. Please use the 'image' object instead.*/
   formats? : format[];
+  /** @deprecated The "style" property was deprecated in version 1.0.4. Please use the 'image' object instead.*/
+  style? : string;
+  /** @deprecated The "decoding" property was deprecated in version 1.0.4. Please use the 'image' object instead.*/
+  decoding? : decoding;
+  images: {
+    style? : string;
+    src: src;
+    artDirectives? : artDirective[];
+    alt? : string;
+    loading?: loading;
+    decoding? : decoding;
+    formats? : format[];
+  }
 }
+
+declare const userInfo: Props;
 
 const {
   TagName = "div",
@@ -28,26 +49,35 @@ const {
   },
   class: className,
   objectFit = 'cover',
+  position = "center",
+  images,
   src,
   artDirectives,
   alt,
   loading,
   formats,
-  position = "center",
+  style,
+  decoding,
   ...parentProps
 } = Astro.props;
 
 const { width, height } = size;
-const imageProps = { src, artDirectives, alt, loading, formats}
+const imageProps = images ? images : { src, artDirectives, alt, loading, formats, style, decoding  }
+
+if(!imageProps.src) throw new Error(`The "src" property of the object "image" is undefined.`);
+if(src) console.log('The "src" property was deprecated in version 1.0.4. This property must now be defined as a property of the "images" object.');
+
+// Avoid defining extra CSS variables in internal elements.
+const Inner: tagName = "div";
 
 ---
 <TagName {...parentProps} class:list={ [ className, 'bgp']}>
   <figure aria-hidden="true">
     <Picture {...imageProps}/>
   </figure>
-  <div>
+  <Inner>
     <slot />
-  </div>
+  </Inner>
 </TagName>
 <style define:vars={{
   imageWidth: width,
@@ -58,7 +88,7 @@ const imageProps = { src, artDirectives, alt, loading, formats}
   .bgp {
     position: relative;
   }
-  div {
+  .bgp :global(div) {
     position: relative;
     z-index: 1;
   }

@@ -12,7 +12,7 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
 
 <BackgroundPicture
   TagName="section" 
-  image={{ 
+  images={{ 
     src: {
       file:"my-image.jpg",
       width: 1000,
@@ -55,9 +55,16 @@ Below is the list of props that the ```<BackgroundImage />``` component accepts.
 
 The `TagName` prop specifies the tag that wraps the background image and inner elements.
 
-### **src** , **artDirectives** , **alt** , **loading** , **formats**
+### ~~**src** , **artDirectives** , **alt** , **loading** , **formats**~~
 
-The props `src`, `artDirectives`, `alt`, `loading`, and `formats` follow the same setup method as the "Picture" component.
+~~The props `src`, `artDirectives`, `alt`, `loading`, and `formats` follow the same setup method as the "Picture" component.~~
+
+> [!NOTE]
+> The src property was deprecated in version 1.0.4. This property must be defined as a property of the 'images' object.
+
+### **images**
+
+The properties of the 'images' prop are passed directly to the 'Picture' component.
 
 ### **size.width** , **size.height**
 
@@ -102,7 +109,7 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
   TagName="section" 
   id="greeting"
   class="p-section"
-  image={{ 
+  images={{ 
     src: {
       file:"my-image.jpg",
       width: 1000,
