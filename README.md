@@ -12,6 +12,10 @@ npm install astro-simple-art-direction
 
 ## Chenge log
 
+### 1.0.4
+
+- BackgroundPicture property adjustments and removal of extra CSS variables.
+
 ### 1.0.3
 
 - Added error handling and fine-tuning of type definitions.
