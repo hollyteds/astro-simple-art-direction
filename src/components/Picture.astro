@@ -3,16 +3,7 @@ import '../type.d.ts';
 import { getImageAsset } from '../renderers/getImageAsset.ts';
 import { generateSrcset } from '../renderers/generateSrcset.ts';
 
-interface Props {
-  style? : string;
-  src: src;
-  artDirectives? : artDirective[];
-  alt? : string;
-  loading?: loading;
-  class? : string;
-  decoding? : decoding;
-  formats? : format[];
-}
+interface Props extends picture{}
 
 const { 
   style,

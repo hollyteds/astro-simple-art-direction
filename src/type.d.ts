@@ -56,6 +56,13 @@ declare type tagName =
   | "dd";
 
 /**
+ * For the 'size' prop of the backgroundPicture.
+ */
+declare type unit = 'px' | '%' | 'em' | 'rem' | 'vw' | 'vh' | 'vmin' | 'vmax' | 'svw' | 'svh' | 'lvw' | 'lvh' | 'dvw' | 'dvh';
+declare type LengthUnit = `${number}${unit}`;
+declare type sizeLength = LengthUnit | 'auto';
+
+/**
  * Available decoding options.
  */
 declare type decoding = 'async' | 'auto' | 'sync' | undefined | null;
@@ -93,7 +100,7 @@ declare type objectFit =
 /**
  * Available object position options.
  */
-declare type objectPosition = 
+type simplePosition = 
   | 'top'
   | 'bottom'
   | 'left'
@@ -102,11 +109,28 @@ declare type objectPosition =
   | 'top left'
   | 'top right'
   | 'bottom left'
-  | 'bottom right'
-  | `${number}${unit}`
-  | `${number} ${number}`
-  | `${number}${unit} ${number}${unit}`
-  | `${"top" | "bottom"} ${number}${unit} ${"left" | "right"} ${number}${unit}`
+  | 'bottom right';
+
+type numberUnit = `${number}${string}`;
+type twoNumbers = `${number} ${number}`;
+type twoNumberUnits = `${number}${string} ${number}${string}`;
+type complexPosition = `${"top" | "bottom"} ${number}${string} ${"left" | "right"} ${number}${string}`;
+
+/**
+ * Represents the type for object position.
+ * It can be one of the following:
+ * - simplePosition
+ * - numberUnit
+ * - twoNumbers
+ * - twoNumberUnits
+ * - complexPosition
+ */
+declare type objectPosition = 
+  | simplePosition
+  | numberUnit
+  | twoNumbers
+  | twoNumberUnits
+  | complexPosition;
 
 /**
  * Represents the src interface.
@@ -116,6 +140,17 @@ declare interface src {
   width: width;
   height: height;
 };
+
+declare interface picture {
+  style?: string;
+  src: src;
+  artDirectives?: artDirective[];
+  alt?: string;
+  loading?: loading;
+  class?: string;
+  decoding?: decoding;
+  formats?: format[];
+}
 
 /**
  * Represents the image elements attributes.
@@ -154,10 +189,3 @@ declare interface assets {
   gif?: GetImageResult,
   svg?: GetImageResult
 }
-
-/**
- * For the 'size' prop of the backgroundPicture.
- */
-declare type unit = 'px' | '%' | 'em' | 'rem' | 'vw' | 'vh' | 'vmin' | 'vmax' | 'svw' | 'svh' | 'lvw' | 'lvh' | 'dvw' | 'dvh';
-declare type LengthUnit = `${number}${unit}`;
-declare type sizeLength = LengthUnit | 'auto';

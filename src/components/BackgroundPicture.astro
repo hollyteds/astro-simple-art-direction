@@ -39,8 +39,6 @@ interface Props extends HTMLAttributes<'HTMLDivElement'>{
   }
 }
 
-declare const userInfo: Props;
-
 const {
   TagName = "div",
   size = { 
@@ -62,7 +60,7 @@ const {
 } = Astro.props;
 
 const { width, height } = size;
-const imageProps = images ? images : { src, artDirectives, alt, loading, formats, style, decoding  }
+const imageProps = (images ? images : { src, artDirectives, alt, loading, formats, style, decoding }) as picture;
 
 if(!imageProps.src) throw new Error(`The "src" property of the object "image" is undefined.`);
 if(src) console.log('The "src" property was deprecated in version 1.0.4. This property must now be defined as a property of the "images" object.');
@@ -71,7 +69,9 @@ if(src) console.log('The "src" property was deprecated in version 1.0.4. This pr
 const Inner: tagName = "div";
 
 ---
-<TagName {...parentProps} class:list={ [ className, 'bgp']}>
+<TagName {...parentProps}
+  class:list={ [ className, 'bgp']} 
+  style={`--image-width:${width};--image-height:${height};--attachment:${objectFit};--position:${position};`}>
   <figure aria-hidden="true">
     <Picture {...imageProps}/>
   </figure>
@@ -79,12 +79,7 @@ const Inner: tagName = "div";
     <slot />
   </Inner>
 </TagName>
-<style define:vars={{
-  imageWidth: width,
-  imageHeight: height,
-  attachment: objectFit,
-  position: position
-}}>
+<style>
   .bgp {
     position: relative;
   }
@@ -104,8 +99,8 @@ const Inner: tagName = "div";
   }
   figure :global(img) {
     display: flex;
-    width: var(--imageWidth);
-    height: var(--imageHeight);
+    width: var(--image-width);
+    height: var(--image-height);
     object-fit: var(--attachment);
     object-position: var(--position);
     justify-content: center;
