@@ -65,6 +65,10 @@ This environment variable specifies the output format of the images used in the 
 
 ## Chenge log
 
+### 1.0.6
+
+- Bug fix.
+
 ### 1.0.5
 
 - Fixed type definition issues and adjusted the output position of CSS properties.
