@@ -10,37 +10,6 @@ By specifying the file, width, and height in the **`src`** object, it outputs re
 npm install astro-simple-art-direction
 ```
 
-## Chenge log
-
-### 1.0.５
-
-- Fixed type definition issues and adjusted the output position of CSS properties.
-
-### 1.0.4
-
-- BackgroundPicture property adjustments and removal of extra CSS variables.
-
-### 1.0.3
-
-- Added error handling and fine-tuning of type definitions.
-
-### 1.0.2
-
-- Added operator for undefined avoidance.
-
-### 1.0.1
-
-- Addition of two environment variables.
-
-  - [FALLBACK_FORMAT](#FALLBACK_FORMAT) 
-  - [DEFAULT_GENERATE_FORMAT](#DEFAULT_GENERATE_FORMAT)
-
-- Add `position` parameter to [BackgroundPicture](/component-BackgroundPicture.md) component.
-
-### 1.0.0
-
-- release
-
 ## Components
 
 - [Picture Component](/component-Picture.md)
@@ -94,3 +63,33 @@ This environment variable specifies the output format of the images used in the 
 > [!NOTE]
 > If the environment variable FALLBACK_FORMAT is defined, the DEFAULT_GENERATE_FORMAT array must contain the image format defined there.
 
+## Chenge log
+
+### 1.0.5
+
+- Fixed type definition issues and adjusted the output position of CSS properties.
+
+### 1.0.4
+
+- BackgroundPicture property adjustments and removal of extra CSS variables.
+
+### 1.0.3
+
+- Added error handling and fine-tuning of type definitions.
+
+### 1.0.2
+
+- Added operator for undefined avoidance.
+
+### 1.0.1
+
+- Addition of two environment variables.
+
+  - [FALLBACK_FORMAT](#FALLBACK_FORMAT) 
+  - [DEFAULT_GENERATE_FORMAT](#DEFAULT_GENERATE_FORMAT)
+
+- Add `position` parameter to [BackgroundPicture](/component-BackgroundPicture.md) component.
+
+### 1.0.0
+
+- release
