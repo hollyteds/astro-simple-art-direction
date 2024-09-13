@@ -27,13 +27,14 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
 ```html
 <!-- Output Results -->
 <section data-astro-hash class="bgp">
-  <figure aria-hidden="true" data-astro-hash style="--imageWidth: 100%;--imageHeight: 100%;--attachment: cover;">
+  <figure aria-hidden="true" data-astro-hash style="--image-width:100%;--image-height:100%;--attachment:cover;">
     <picture>
       <source srcset="./_astro/my-image.hash.avif 1x,./_astro/my-image.hash.avif 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/avif">
-      <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/webp"> <img width="500" height="2000" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 500px) 100vw, 500px" loading="lazy" decoding="auto" alt="">
+      <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/webp">
+      <img width="500" height="2000" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 500px) 100vw, 500px" loading="lazy" decoding="auto" alt="">
     </picture>
   </figure>
-  <div class="bgp-inner" data-astro-hash style="--imageWidth: 100%;--imageHeight: 100%;--attachment: cover;">
+  <div class="bgp-inner" data-astro-hash>
     <h1>astro-simple-art-direction</h1>
   </div>
 </section>
@@ -130,7 +131,7 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
       <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/webp"> <img width="500" height="2000" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 500px) 100vw, 500px" loading="lazy" decoding="auto" alt="">
     </picture>
   </figure>
-  <div class="bgp-inner" data-astro-hash style="--imageWidth: 100%;--imageHeight: 100%;--attachment: cover;">
+  <div class="bgp-inner" data-astro-hash>
     <h1>astro-simple-art-direction</h1>
   </div>
 </section>

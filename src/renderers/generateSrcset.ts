@@ -1,13 +1,14 @@
 /**
  * Generates the srcset string for a given array of images.
  */
-export const generateSrcset = (images: ImageMetadata[]) => {
+export const generateSrcset = (images: { [key: string]: ImageMetadata }) => {
   
   let srcset: string = '';
 
-  for( let i = 1; i<images.length; i++ ) {
-    srcset += images[i].src + ' ' + i+'x,'; 
-  }
+  Object.keys(images).forEach(key => {
+    if(key !== "default" ) srcset += images[key].src + ` ${key},`;
+  })
+
   return srcset.slice(0, -1);
   
 }

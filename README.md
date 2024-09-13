@@ -37,8 +37,16 @@ By assigning a directory name to this variable, you can change the reference loc
 MAX_RESOLUTION_MULTIPLIER=4 # default : 2
 ```
 
-This environment variable determines the range of sizes to output in the srcset attribute, based on the width and height, ranging from 1x to a defined maximum.
-For example, if defined to 4, it will output four images at 1x, 2x, 3x, and 4x resolutions. The default value is 2.
+This environment variable determines the range of sizes to output in the srcset attribute based on the width and height.
+The output is up to the specified maximum multiplier. The default value is 2.
+
+### INTRINSIC_SIZE_LIST
+
+```bash
+INTRINSIC_SIZE_LIST=400 800 1200 # default : 360 720 1440
+```
+
+This environment variable determines the list of sizes to output in the srcset attribute.
 
 ### FALLBACK_FORMAT
 

@@ -64,7 +64,7 @@ if(artDirectives) {
         {...mediaImage.attributes}
         srcset={
           mediaImage.defaultFormat === 'svg'
-          ? mediaImage.svg[1].src
+          ? mediaImage.svg.src
           : generateSrcset(mediaImage[mediaImage.defaultFormat])
         }
       />
@@ -90,7 +90,7 @@ if(artDirectives) {
         : undefined
       )
     }}
-    src={image[image.defaultFormat][1].src}
+    src={image[image.defaultFormat]['default'].src}
     srcset={
       image.defaultFormat !== 'svg' 
       ? generateSrcset(image[image.defaultFormat]) 

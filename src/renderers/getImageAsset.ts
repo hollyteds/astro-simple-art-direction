@@ -32,6 +32,7 @@ export const getImageAsset: Function = async (src: src, formats: format[]) => {
 
       const isSvg: boolean = image.format === "svg";
 
+      // Initialize the assets object with default attributes and format information.
       let assets: assets = {
         attributes: {
           width: width,
@@ -44,8 +45,8 @@ export const getImageAsset: Function = async (src: src, formats: format[]) => {
         ...( !isSvg && !envFormat ? {
           [image.format]: await getFormatImages(image, image.format, width)
         } : {}),
-        // SVG format returns the path as is. Index 0 is skipped on output, so apply 1.
-        ...(isSvg && { svg: { [1]: image } }),
+        // For SVG format, directly assign the path to the 'default' key without modification.
+        ...( isSvg && { svg: { default: image } }),
       };
 
       // Output all specified image formats.
