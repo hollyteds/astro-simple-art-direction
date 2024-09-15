@@ -26,11 +26,12 @@ const {
   ...props
 } = Astro.props;
 
+const { widths } = src;
 
 // Define the output image format from arguments or environment variables. Defaults to avif and webp.
 const envGenarateFormat: format[] = formats ?? await import.meta.env.DEFAULT_GENERATE_FORMAT?.split(' ') ?? ['avif', 'webp'];
 
-const image: assets = await getImageAsset(src, envGenarateFormat);
+const image: assets = await getImageAsset(src, envGenarateFormat, widths);
 if(!image) return;
 
 // Fetch priority for the image
@@ -40,7 +41,7 @@ const fetchpriority : fetchpriority = (loading === 'eager') ? 'high' : null;
 let mediaImages :assets[] = [];
 if(artDirectives) {
   for( const src of artDirectives ) {
-    const asset = await getImageAsset( src, envGenarateFormat);
+    const asset = await getImageAsset( src, envGenarateFormat, src.widths ?? widths );
     mediaImages.push({ ...asset, attributes: { ...asset.attributes, media: src.media } });
   }
 }

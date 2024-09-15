@@ -29,9 +29,9 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
 <section data-astro-hash class="bgp">
   <figure aria-hidden="true" data-astro-hash style="--image-width:100%;--image-height:100%;--attachment:cover;">
     <picture>
-      <source srcset="./_astro/my-image.hash.avif 1x,./_astro/my-image.hash.avif 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/avif">
-      <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/webp">
-      <img width="500" height="2000" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 500px) 100vw, 500px" loading="lazy" decoding="auto" alt="">
+      <source srcset="./_astro/my-image.hash.avif 1000w,./_astro/my-image.hash.avif 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/avif">
+      <source srcset="./_astro/my-image.hash.webp 1000w,./_astro/my-image.hash.webp 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/webp">
+      <img width="1000" height="800" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1000w,./_astro/my-image.hash.jpg 2000w" sizes="(max-width: 1000px) 100vw, 1000px" loading="lazy" decoding="auto" alt="My Image">
     </picture>
   </figure>
   <div class="bgp-inner" data-astro-hash>
@@ -127,8 +127,9 @@ import { BackgroundPicture } from 'astro-simple-art-direction';
 <section id="greeting" data-astro-hash class="bgp p-section">
   <figure aria-hidden="true" data-astro-hash style="--imageWidth: 100%;--imageHeight: 100%;--attachment: cover;">
     <picture>
-      <source srcset="./_astro/my-image.hash.avif 1x,./_astro/my-image.hash.avif 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/avif">
-      <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 500px) 100vw, 500px" type="image/webp"> <img width="500" height="2000" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 500px) 100vw, 500px" loading="lazy" decoding="auto" alt="">
+  <source srcset="./_astro/my-image.hash.avif 1000w,./_astro/my-image.hash.avif 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/avif">
+  <source srcset="./_astro/my-image.hash.webp 1000w,./_astro/my-image.hash.webp 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/webp">
+  <img width="1000" height="800" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1000w,./_astro/my-image.hash.jpg 2000w" sizes="(max-width: 1000px) 100vw, 1000px" loading="lazy" decoding="auto" alt="My Image">
     </picture>
   </figure>
   <div class="bgp-inner" data-astro-hash>

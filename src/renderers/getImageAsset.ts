@@ -5,7 +5,7 @@ import { getFormatImages } from "./getFormatImages";
  * Retrieves the image asset based on the provided source and formats.
  */
 
-export const getImageAsset: Function = async (src: src, formats: format[]) => {
+export const getImageAsset: Function = async (src: src, formats: format[], widths?: number[]) => {
   const { file, width, height } = src;
 
   // Convert the DEFAULT_IMAGE_DIRECTORY environment variable.
@@ -43,7 +43,7 @@ export const getImageAsset: Function = async (src: src, formats: format[]) => {
 
         // Format of the original image other than SVG (but if FALLBACK_FORMAT is specified, it is not processed here as it will be optimised together later).
         ...( !isSvg && !envFormat ? {
-          [image.format]: await getFormatImages(image, image.format, width)
+          [image.format]: await getFormatImages(image, image.format, width, widths)
         } : {}),
         // For SVG format, directly assign the path to the 'default' key without modification.
         ...( isSvg && { svg: { default: image } }),
@@ -52,7 +52,7 @@ export const getImageAsset: Function = async (src: src, formats: format[]) => {
       // Output all specified image formats.
       if (!isSvg && formats) {
         for (const format of formats) {
-          assets[format] = await getFormatImages(image, format, width);
+          assets[format] = await getFormatImages(image, format, width, widths);
         }
       }
 

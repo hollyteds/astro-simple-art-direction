@@ -39,14 +39,7 @@ MAX_RESOLUTION_MULTIPLIER=4 # default : 2
 
 This environment variable determines the range of sizes to output in the srcset attribute based on the width and height.
 The output is up to the specified maximum multiplier. The default value is 2.
-
-### INTRINSIC_SIZE_LIST
-
-```bash
-INTRINSIC_SIZE_LIST=400 800 1200 # default : 360 720 1440
-```
-
-This environment variable determines the list of sizes to output in the srcset attribute.
+The value must be an integer between 1 and 4. Decimal points will be truncated.
 
 ### FALLBACK_FORMAT
 

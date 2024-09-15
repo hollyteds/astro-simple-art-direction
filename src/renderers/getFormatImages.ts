@@ -8,6 +8,7 @@ export const getFormatImages = async (
   image: ImageMetadata,
   format: format,
   width: width,
+  widths?: number[]
 ) => {
 
   // Initial declaration of the return value.
@@ -15,20 +16,24 @@ export const getFormatImages = async (
     [key: string]: GetImageResult;
   } = {};
 
-  // Retrieve the size array from environment variables if available; otherwise, use default values.
-  const envSizeList: number[] = await import.meta.env.INTRINSIC_SIZE_LIST?.split(' ') ?? [360, 720, 1440, 2880];
-
   // Convert environment variable to the number
   const envNumber: number = Number(await import.meta.env.MAX_RESOLUTION_MULTIPLIER);
-
+  
   // A constant defining the maximum multiplier for the output resolution.
-  const maxResolutionMultiplier: number = envNumber ? envNumber : 2;
+  const maxResolutionMultiplier: number = envNumber && envNumber >= 1 && envNumber < 5 ? Math.floor(envNumber) : 2;
+
+  // Retrieve the size array from environment variables if available; otherwise, use default values.
+  const listOfWidths: number[] = widths ?? (() => {
+    const result = [];
+    for (let i = 1; i <= maxResolutionMultiplier; i++) {
+      result.push(width * i);
+    }
+    return result;
+  })();
 
   // If the maximum value is less than the product of the specified size and the maximum resolution multiplier, add the product to the list
-  const maxListSize = envSizeList.reduce((max, current) => (current > max ? current : max), envSizeList[0]);
-  if ( maxListSize < width * maxResolutionMultiplier ) {
-    envSizeList.push(width * maxResolutionMultiplier);
-  }
+  const maxListSize = listOfWidths.reduce((max, current) => (current > max ? current : max), listOfWidths[0]);
+  if ( maxListSize < width ) listOfWidths.push(width);
 
   // Generate the default image.
   formatImages['default'] = await getImage({
@@ -37,14 +42,16 @@ export const getFormatImages = async (
     width: width
   });
 
+  if (maxResolutionMultiplier === 1 && ( !widths || widths.length === 0 ) ) return formatImages;
+
   let isMaxSize = false;
-  for (let i = 0; i < envSizeList.length; i++) {
+  for (let i = 0; i < listOfWidths.length; i++) {
 
     // Check if the current width from the list exceeds the allowed maximum resolution.
-    if (envSizeList[i] > width * maxResolutionMultiplier) isMaxSize = true;
+    if ( listOfWidths[i] > width * maxResolutionMultiplier) isMaxSize = true;
     
     // Defining the generate size: if the maximum size, use the maximum resolution; otherwise, use the current size from the list.
-    let generateSize = isMaxSize ? width * maxResolutionMultiplier : envSizeList[i];
+    let generateSize = isMaxSize ? width * maxResolutionMultiplier : listOfWidths[i];
 
     // Generate the image with the determined width and add it to the formatImages object.
     formatImages[`${generateSize}w`] = await getImage({

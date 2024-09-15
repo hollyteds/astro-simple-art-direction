@@ -52,6 +52,7 @@ import BackgroundPicture from "../components/BackgroundPicture.astro";
         file: "test.jpg",
         width: 500,
         height: 500,
+        widths: [60, 120, 240]
       },
       artDirectives: [
         {
@@ -61,7 +62,7 @@ import BackgroundPicture from "../components/BackgroundPicture.astro";
           height: 200,
         },
       ],
-      loading: "lazy"
+      loading: "lazy",
     }}
   >
   <h1>This is a test</h1>

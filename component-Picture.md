@@ -1,6 +1,6 @@
 # **Picture**
 
-This Astro component dynamically generates ```<picture/>``` elements for displaying images. Without any extra class name or style output, this component supports multiple image formats and media queries for responsive image display.
+This Astro component generates a ```<picture/>``` element for displaying images. It does not output extra class names or styles and supports multiple image formats and media queries for responsive image display.
 
 ## **Usage**
 
@@ -22,9 +22,9 @@ import { Picture } from 'astro-simple-art-direction';
 ```html
 <!-- Output Results -->
 <picture>
-  <source srcset="./_astro/my-image.hash.avif 1x,./_astro/my-image.hash.avif 2x" sizes="(max-width: 1000px) 100vw, 1000px" type="image/avif">
-  <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 1000px) 100vw, 1000px" type="image/webp">
-  <img width="1000" height="800" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 1000px) 100vw, 1000px" loading="lazy" decoding="auto" alt="My Image">
+  <source srcset="./_astro/my-image.hash.avif 1000w,./_astro/my-image.hash.avif 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/avif">
+  <source srcset="./_astro/my-image.hash.webp 1000w,./_astro/my-image.hash.webp 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/webp">
+  <img width="1000" height="800" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1000w,./_astro/my-image.hash.jpg 2000w" sizes="(max-width: 1000px) 100vw, 1000px" loading="lazy" decoding="auto" alt="My Image">
 </picture>
 ```
 
@@ -52,12 +52,12 @@ This is the case of specifying art direction.
 ```html
 <!-- Output Results -->
 <picture>
-  <source media="(max-width: 767px)" width="400" height="400" srcset="./_astro/my-image-sp.hash.avif 1x,./_astro/my-image-sp.hash.avif 2x" sizes="(max-width: 400px) 100vw, 400px" type="image/avif">
-  <source media="(max-width: 767px)" width="400" height="400" srcset="./_astro/my-image-sp.hash.webp 1x,./_astro/my-image-sp.hash.webp 2x" sizes="(max-width: 400px) 100vw, 400px" type="image/webp">
-  <source media="(max-width: 767px)" width="400" height="400" srcset="./_astro/my-image-sp.hash.jpg 1x,./_astro/my-image-sp.hash.jpg 2x" sizes="(max-width: 400px) 100vw, 400px">
-  <source srcset="./_astro/my-image.hash.avif 1x,./_astro/my-image.hash.avif 2x" sizes="(max-width: 1000px) 100vw, 1000px" type="image/avif">
-  <source srcset="./_astro/my-image.hash.webp 1x,./_astro/my-image.hash.webp 2x" sizes="(max-width: 1000px) 100vw, 1000px" type="image/webp">
-  <img width="1000" height="800" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1x,./_astro/my-image.hash.jpg 2x" sizes="(max-width: 1000px) 100vw, 1000px" loading="lazy" decoding="auto" alt="My image">
+  <source media="(max-width: 767px)" width="400" height="400" srcset="./_astro/my-image-sp.hash.avif 400w,./_astro/my-image-sp.hash.avif 800w" sizes="(max-width: 400px) 100vw, 400px" type="image/avif">
+  <source media="(max-width: 767px)" width="400" height="400" srcset="./_astro/my-image-sp.hash.webp 400w,./_astro/my-image-sp.hash.webp 800w" sizes="(max-width: 400px) 100vw, 400px" type="image/webp">
+  <source media="(max-width: 767px)" width="400" height="400" srcset="./_astro/my-image-sp.hash.jpg 400w,./_astro/my-image-sp.hash.jpg 800w" sizes="(max-width: 400px) 100vw, 400px">
+  <source srcset="./_astro/my-image.hash.avif 1000w,./_astro/my-image.hash.avif 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/avif">
+  <source srcset="./_astro/my-image.hash.webp 1000w,./_astro/my-image.hash.webp 2000w" sizes="(max-width: 1000px) 100vw, 1000px" type="image/webp">
+  <img width="1000" height="800" src="./_astro/my-image.hash.jpg" srcset="./_astro/my-image.hash.jpg 1000w,./_astro/my-image.hash.jpg 2000w" sizes="(max-width: 1000px) 100vw, 1000px" loading="lazy" decoding="auto" alt="My Image">
 </picture>
 ```
 
@@ -74,12 +74,13 @@ Below is the list of props that the ```<Picture />``` component accepts. Only th
   file: string;
   width:  number;
   height: number;
+  widths: number[]; //optional
 };
 ```
 
-**Default:** `undefined`
-
-The `src` prop specifies the filename, width, and height of the main image to be displayed.
+The `src` property specifies the file name, width, and height of the main image to be displayed.
+You can also specify the optional widths property to define an array of widths to be used in the srcset attribute.
+If the widths property is not specified, a default array will be set consisting of the value specified in the width property and its multiples.
 
 > [!NOTE]
 > The types for width and height must be of type 'number'. Using units such as %, pw, vw, etc., is not allowed.

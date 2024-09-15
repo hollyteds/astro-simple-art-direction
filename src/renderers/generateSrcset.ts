@@ -9,6 +9,6 @@ export const generateSrcset = (images: { [key: string]: ImageMetadata }) => {
     if(key !== "default" ) srcset += images[key].src + ` ${key},`;
   })
 
-  return srcset.slice(0, -1);
+  return srcset ? srcset.slice(0, -1) : undefined;
   
 }
