@@ -66,6 +66,10 @@ This environment variable specifies the output format of the images used in the 
 
 ## Chenge log
 
+### 1.0.7
+
+- Replaced the output sizes of the srcset attribute from resolution units to width units.
+
 ### 1.0.6
 
 - Bug fix.
