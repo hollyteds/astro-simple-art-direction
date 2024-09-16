@@ -140,6 +140,7 @@ declare interface src {
   width: width;
   height: height;
   widths?: number[];
+  sizes?: string;
 };
 
 declare interface picture {

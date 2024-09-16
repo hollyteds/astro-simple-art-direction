@@ -37,12 +37,27 @@ if(!image) return;
 // Fetch priority for the image
 const fetchpriority : fetchpriority = (loading === 'eager') ? 'high' : null;
 
+/**
+ * Organizes the attributes of an image for the Picture component.
+ *
+ * @param {assets} image - The image object.
+ * @param {src | artDirective} src - The source or art directive object.
+ * @returns {object} - The organized attributes object.
+ */
+const organizeAttributes = (image: assets, src: src | artDirective ) => ({
+  ...image.attributes,
+  sizes: image.defaultFormat !== 'svg'
+    ? (src.sizes ?? image.attributes.sizes )
+    : undefined,
+  media: (src as artDirective)?.media,
+});
+
 // Fetch images for different media queries
 let mediaImages :assets[] = [];
 if(artDirectives) {
   for( const src of artDirectives ) {
     const asset = await getImageAsset( src, envGenarateFormat, src.widths ?? widths );
-    mediaImages.push({ ...asset, attributes: { ...asset.attributes, media: src.media } });
+    mediaImages.push({ ...asset, attributes: organizeAttributes( asset, src) });
   }
 }
 
@@ -75,7 +90,7 @@ if(artDirectives) {
     && envGenarateFormat.map((format: format) => (
       (image.defaultFormat !== format) && (
         <source
-          {...{...image.attributes, sizes: undefined}}
+          {...organizeAttributes(image, src)}
           srcset={generateSrcset(image[format])}
           type={"image/" + format}
         />
@@ -83,14 +98,7 @@ if(artDirectives) {
   ))
   }
   <img
-    {...{
-      ...image.attributes,
-        sizes: (
-        image.defaultFormat !== 'svg' 
-        ? image.attributes.sizes 
-        : undefined
-      )
-    }}
+    {...organizeAttributes(image, src)}
     src={image[image.defaultFormat]['default'].src}
     srcset={
       image.defaultFormat !== 'svg' 

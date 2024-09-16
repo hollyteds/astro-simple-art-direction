@@ -74,15 +74,18 @@ Below is the list of props that the ```<Picture />``` component accepts. Only th
   file: string;
   width:  number;
   height: number;
-  widths: number[]; //optional
+  widths: number[]; //optional ( Added in: @1.0.7 )
+  sizes: string; //optional ( Added in: @1.0.8 )
 };
 ```
 
 The `src` property specifies the file name, width, and height of the main image to be displayed.
-You can also specify the optional widths property to define an array of widths to be used in the srcset attribute.
-If the widths property is not specified, a default array will be set consisting of the value specified in the width property and its multiples.
 
-> [!NOTE]
+#### **file** (required)
+
+Specifies the file name of the image to be displayed. Images within the public directory cannot be specified, as this component is intended for optimization.
+
+> [!WARNING]
 > The types for width and height must be of type 'number'. Using units such as %, pw, vw, etc., is not allowed.
 
 The file specified in "file" refers to the "images" directory in the "src" directory by default.
@@ -92,6 +95,36 @@ The following is an example of changing to the "assets" directory.
 ```bash
 DEFAULT_IMAGE_DIRECTORY=assets
 ```
+
+#### **width** (required)
+
+A `width` of the generated image.
+
+#### **height** (required)
+
+A `height` of the generated image.
+
+#### **widths** (optional)
+
+A list of `widths` to generate for the image.
+
+If provided, this value will be used to generate a srcset attribute on the <img> tag.
+
+> [!WARNING]
+> Unlike Astro’s <Image> component, this component does not ignore upscaling.
+
+#### **sizes** (optional)
+
+If the `sizes` attribute is not specified, it will generate based on the width value. For example, if the `width` is set to 640, the following will be generated.
+
+```html
+ sizes="(max-width:640px) 100vw, 640px"
+```
+
+This is not necessarily the optimal setting. It is strongly recommended to specify `sizes` when `widths` is defined.
+
+> [!NOTE]
+> The src attribute is generally used to specify the source file, and it should not be treated as an object. While I would like to correct this upon request, it has been kept as is for backward compatibility, as this is mostly a personal project.
 
 ### **artDirectives**
 
@@ -107,7 +140,7 @@ interface artDirective extends src {
 
 The `artDirectives` prop specifies images for art direction, and its input is optional.
 
-It extends the type from the “src” option and includes property “media”. Please note that it is in array format, and the output follows the order of the specified images.
+It extends the type from the `src` option and includes property `media`. Please note that it is in array format, and the output follows the order of the specified images.
 
 ### **alt**
 
