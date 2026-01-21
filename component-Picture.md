@@ -152,11 +152,13 @@ The `artDirectives` alternative text to display if the image fails to load.
 
 ### **formats**
 
-**Type:** `(| "heic" | "heif" | "avif" | "jpg" | "jpeg" | "png" | "tiff" | "webp" | "gif" | "SVG" )[]`;
+**Type:** `(| "heic" | "heif" | "avif" | "jpg" | "jpeg" | "png" | "tiff" | "webp" | "gif" | "svg" )[]`;
 
 **Default:** `["avif", "webp"]`
 
 The `formats` prop specifies, in an array, the image formats to output primarily as next-generation formats. The original image format is always outputted by default and therefore does not need to be specified.
+
+If `formats` or `DEFAULT_GENERATE_FORMAT` includes `svg`, it is ignored for generated sources. SVG is supported as the original image format.
 
 ### **loading**
 

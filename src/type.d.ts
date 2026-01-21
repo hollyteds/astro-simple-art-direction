@@ -177,17 +177,21 @@ declare interface artDirective extends src {
 /**
  * Assets interface.
  */
+declare interface formatImages {
+  [key: string]: GetImageResult;
+}
+
 declare interface assets {
   attributes: imageAttributes;
   defaultFormat: format;
-  heic?: GetImageResult,
-  heif?: GetImageResult,
-  avif?: GetImageResult,
-  jpg?: GetImageResult,
-  jpeg?: GetImageResult,
-  png?: GetImageResult,
-  tiff?: GetImageResult,
-  webp?: GetImageResult,
-  gif?: GetImageResult,
-  svg?: GetImageResult
+  heic?: formatImages,
+  heif?: formatImages,
+  avif?: formatImages,
+  jpg?: formatImages,
+  jpeg?: formatImages,
+  png?: formatImages,
+  tiff?: formatImages,
+  webp?: formatImages,
+  gif?: formatImages,
+  svg?: { default: ImageMetadata }
 }

@@ -3,8 +3,7 @@ import '../type.d.ts';
 import type { HTMLAttributes } from 'astro/types';
 import Picture from '../components/Picture.astro';
 
-// @ts-expect-error
-interface Props extends HTMLAttributes<'HTMLDivElement'>{
+interface Props extends HTMLAttributes<tagName> {
   TagName?: tagName;
   size? : {
     width: sizeLength;
@@ -58,17 +57,23 @@ const {
   ...parentProps
 } = Astro.props;
 
+const { slot, ...restParentProps } = parentProps as typeof parentProps & { slot?: string | null };
+const cleanedParentProps: Omit<typeof parentProps, 'slot'> & { slot?: string } =
+  slot == null ? restParentProps : { ...restParentProps, slot };
+
 const { width, height } = size;
 const imageProps = (images ? images : { src, artDirectives, alt, loading, formats, style, decoding }) as picture;
 
-if(!imageProps.src) throw new Error(`The "src" property of the object "image" is undefined.`);
-if(src) console.log('The "src" property was deprecated in version 1.0.4. This property must now be defined as a property of the "images" object.');
+if (!imageProps.src) throw new Error(`The "src" property of the object "image" is undefined.`);
+if (src && import.meta.env.DEV) {
+  console.warn('The "src" property was deprecated in version 1.0.4. This property must now be defined as a property of the "images" object.');
+}
 
 // Avoid defining extra CSS variables in internal elements.
 const Inner: tagName = "div";
 
 ---
-<TagName {...parentProps}
+<TagName {...cleanedParentProps}
   class:list={ [ className, 'bgp']} 
   style={`--image-width:${width};--image-height:${height};--attachment:${objectFit};--position:${position};`}>
   <figure aria-hidden="true">

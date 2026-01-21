@@ -28,14 +28,74 @@ const {
 
 const { widths } = src;
 
-// Define the output image format from arguments or environment variables. Defaults to avif and webp.
-const envGenarateFormat: format[] = formats ?? await import.meta.env.DEFAULT_GENERATE_FORMAT?.split(' ') ?? ['avif', 'webp'];
+const supportedFormats = [
+  'heic',
+  'heif',
+  'avif',
+  'jpg',
+  'jpeg',
+  'png',
+  'tiff',
+  'webp',
+  'gif',
+  'svg',
+] as const;
 
-const image: assets = await getImageAsset(src, envGenarateFormat, widths);
-if(!image) return;
+const isFormat = (value: string): value is format =>
+  (supportedFormats as readonly string[]).includes(value);
+
+const parseEnvFormats = (value?: string): format[] => {
+  if (!value) return [];
+  return value
+    .split(/\s+/)
+    .map((item) => item.trim())
+    .filter((item): item is format => isFormat(item));
+};
+
+// Define the output image format from arguments or environment variables. Defaults to avif and webp.
+const defaultFormats: format[] = ['avif', 'webp'];
+const generateFormats: format[] = formats
+  ?? (() => {
+    const envFormats = parseEnvFormats(import.meta.env.DEFAULT_GENERATE_FORMAT);
+    return envFormats.length > 0 ? envFormats : defaultFormats;
+  })();
+
+const envFallbackFormat: format | undefined = import.meta.env.FALLBACK_FORMAT;
+if (envFallbackFormat && generateFormats.indexOf(envFallbackFormat) < 0) {
+  const formatsLabel = formats ? JSON.stringify(formats) : 'undefined';
+  const generateFormatsLabel = JSON.stringify(generateFormats);
+  throw new Error(
+    `[Picture] The fallback format "${envFallbackFormat}" for "${src?.file ?? 'unknown'}" is missing from output formats. `
+    + `The fallback format must always be included in output formats. `
+    + `Check <Picture> props or .env settings. `
+    + `src.file=${src?.file ?? 'unknown'}, formats=${formatsLabel}, `
+    + `generateFormats=${generateFormatsLabel}, envFallback=${envFallbackFormat}`
+  );
+}
+
+const rasterFormats = generateFormats.filter(
+  (format): format is Exclude<format, 'svg'> => format !== 'svg'
+);
+
+const image = await getImageAsset(src, generateFormats, widths);
+if (!image) return;
 
 // Fetch priority for the image
 const fetchpriority : fetchpriority = (loading === 'eager') ? 'high' : null;
+
+let defaultImageSrc: string;
+let defaultImageSrcset: string | undefined;
+
+if (image.defaultFormat === 'svg') {
+  if (!image.svg) return;
+  defaultImageSrc = image.svg.default.src;
+  defaultImageSrcset = undefined;
+} else {
+  const rasterImages = image[image.defaultFormat];
+  if (!rasterImages) return;
+  defaultImageSrc = rasterImages.default.src;
+  defaultImageSrcset = generateSrcset(rasterImages);
+}
 
 /**
  * Organizes the attributes of an image for the Picture component.
@@ -54,57 +114,86 @@ const organizeAttributes = (image: assets, src: src | artDirective ) => ({
 
 // Fetch images for different media queries
 let mediaImages :assets[] = [];
-if(artDirectives) {
-  for( const src of artDirectives ) {
-    const asset = await getImageAsset( src, envGenarateFormat, src.widths ?? widths );
-    mediaImages.push({ ...asset, attributes: organizeAttributes( asset, src) });
+if (artDirectives) {
+  for (const src of artDirectives) {
+    const asset = await getImageAsset(src, generateFormats, src.widths ?? widths);
+    if (!asset) continue;
+    mediaImages.push({ ...asset, attributes: organizeAttributes(asset, src) });
   }
 }
 
+const mainAttributes = organizeAttributes(image, src);
+const hasFormatSources = image.defaultFormat !== 'svg'
+  && rasterFormats.some((format) => format !== image.defaultFormat && image[format]);
+const shouldRenderPicture = mediaImages.length > 0 || hasFormatSources;
+
 ---
-<picture>
-  {mediaImages && mediaImages.length > 0 
-    && mediaImages.map((mediaImage: assets) => (
-    <>
-      { mediaImage.defaultFormat !== 'svg'
-        && envGenarateFormat.map((format: format) => 
-        (mediaImage.defaultFormat !== format) && (
-        <source
-          {...mediaImage.attributes}
-          srcset={generateSrcset(mediaImage[format])}
-          type={"image/" + format}
-        />
-        ))
-      }
-      <source
-        {...mediaImage.attributes}
-        srcset={
-          mediaImage.defaultFormat === 'svg'
-          ? mediaImage.svg.src
-          : generateSrcset(mediaImage[mediaImage.defaultFormat])
-        }
-      />
-    </>
-  ))}
-  { image.defaultFormat !== 'svg'
-    && envGenarateFormat.map((format: format) => (
-      (image.defaultFormat !== format) && (
-        <source
-          {...organizeAttributes(image, src)}
-          srcset={generateSrcset(image[format])}
-          type={"image/" + format}
-        />
-      )
-  ))
-  }
-  <img
-    {...organizeAttributes(image, src)}
-    src={image[image.defaultFormat]['default'].src}
-    srcset={
-      image.defaultFormat !== 'svg' 
-      ? generateSrcset(image[image.defaultFormat]) 
-      : undefined
+{shouldRenderPicture ? (
+  <picture>
+    {mediaImages && mediaImages.length > 0 
+      && mediaImages.map((mediaImage: assets) => {
+        const mediaDefaultRasterImages = mediaImage.defaultFormat === 'svg'
+          ? undefined
+          : mediaImage[mediaImage.defaultFormat];
+        const mediaDefaultSrcset = mediaImage.defaultFormat === 'svg'
+          ? mediaImage.svg?.default.src
+          : mediaDefaultRasterImages
+            ? generateSrcset(mediaDefaultRasterImages)
+            : undefined;
+
+        return (
+          <>
+            { mediaImage.defaultFormat !== 'svg'
+              && rasterFormats.map((format) => {
+                const formatImages = mediaImage[format];
+                if (mediaImage.defaultFormat === format || !formatImages) return null;
+                return (
+                  <source
+                    {...mediaImage.attributes}
+                    srcset={generateSrcset(formatImages)}
+                    type={"image/" + format}
+                  />
+                );
+              })
+            }
+            <source
+              {...mediaImage.attributes}
+              srcset={mediaDefaultSrcset}
+            />
+          </>
+        );
+      })}
+    { image.defaultFormat !== 'svg'
+      && rasterFormats.map((format) => {
+        const formatImages = image[format];
+        if (image.defaultFormat === format || !formatImages) return null;
+        return (
+          <source
+            {...mainAttributes}
+            srcset={generateSrcset(formatImages)}
+            type={"image/" + format}
+          />
+        );
+    })
     }
+    <img
+      {...mainAttributes}
+      src={defaultImageSrc}
+      srcset={defaultImageSrcset}
+      loading={loading}
+      decoding={decoding}
+      fetchpriority={fetchpriority}
+      alt={alt}
+      class={className}
+      style={style}
+      {...props}
+    />
+  </picture>
+) : (
+  <img
+    {...mainAttributes}
+    src={defaultImageSrc}
+    srcset={defaultImageSrcset}
     loading={loading}
     decoding={decoding}
     fetchpriority={fetchpriority}
@@ -113,4 +202,4 @@ if(artDirectives) {
     style={style}
     {...props}
   />
-</picture>
+)}

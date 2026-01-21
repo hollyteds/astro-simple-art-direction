@@ -3,8 +3,7 @@ import '../type.d.ts';
 import { getBackground } from '../renderers/getBackground.ts';
 import type { HTMLAttributes } from 'astro/types';
 
-// @ts-expect-error
-interface Props extends HTMLAttributes<'HTMLDivElement'> {
+interface Props extends HTMLAttributes<tagName> {
 	TagName?: tagName;
 	image: {
 		src: src;
@@ -18,10 +17,14 @@ const {
 	...props
 } = Astro.props;
 
+const { slot, ...restProps } = props as typeof props & { slot?: string | null };
+const cleanedProps: Omit<typeof props, 'slot'> & { slot?: string } =
+  slot == null ? restProps : { ...restProps, slot };
+
 const {src, format } = image;
 
 const backgroundImage = await getBackground(src, format);
 ---
-<TagName {...props} style={`background-image: url(${backgroundImage});`}>
+<TagName {...cleanedProps} style={`background-image: url(${backgroundImage});`}>
   <slot/>
 </TagName>

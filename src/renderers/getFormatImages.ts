@@ -1,4 +1,3 @@
-import type { GetImageResult } from "astro";
 import { getImage } from "astro:assets";
 
 /**
@@ -12,12 +11,10 @@ export const getFormatImages = async (
 ) => {
 
   // Initial declaration of the return value.
-  let formatImages: {
-    [key: string]: GetImageResult;
-  } = {};
+  const imagesByWidth: formatImages = {};
 
   // Convert environment variable to the number
-  const envNumber: number = Number(await import.meta.env.MAX_RESOLUTION_MULTIPLIER);
+  const envNumber: number = Number(import.meta.env.MAX_RESOLUTION_MULTIPLIER);
   
   // A constant defining the maximum multiplier for the output resolution.
   const maxResolutionMultiplier: number = envNumber && envNumber >= 1 && envNumber < 5 ? Math.floor(envNumber) : 2;
@@ -36,13 +33,13 @@ export const getFormatImages = async (
   if ( maxListSize < width ) listOfWidths.push(width);
 
   // Generate the default image.
-  formatImages['default'] = await getImage({
+  imagesByWidth['default'] = await getImage({
     src: image,
     format: format,
     width: width
   });
 
-  if (maxResolutionMultiplier === 1 && ( !widths || widths.length === 0 ) ) return formatImages;
+  if (maxResolutionMultiplier === 1 && ( !widths || widths.length === 0 ) ) return imagesByWidth;
 
   let isMaxSize = false;
   for (let i = 0; i < listOfWidths.length; i++) {
@@ -54,7 +51,7 @@ export const getFormatImages = async (
     let generateSize = isMaxSize ? width * maxResolutionMultiplier : listOfWidths[i];
 
     // Generate the image with the determined width and add it to the formatImages object.
-    formatImages[`${generateSize}w`] = await getImage({
+    imagesByWidth[`${generateSize}w`] = await getImage({
       src: image,
       format: format,
       width: generateSize
@@ -63,5 +60,5 @@ export const getFormatImages = async (
     // Exit the loop if the maximum allowable resolution has been reached.
     if (isMaxSize) break;
   }
-  return formatImages;
+  return imagesByWidth;
 }

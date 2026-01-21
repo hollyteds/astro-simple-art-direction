@@ -1,6 +1,8 @@
 import { isImageMetadata } from '../typeGuard.ts';
 import { getImage } from "astro:assets";
 
+const images = import.meta.glob(`/src/**/*`);
+
 /**
  * This function retrieves the background of an image.
  */
@@ -15,36 +17,34 @@ export const getBackground = async (
   const { file, width, height } = src;
 
   // Refer to environment variables
-  const envFormat: format = await import.meta.env.FALLBACK_FORMAT;
+  const envFormat: format | undefined = import.meta.env.FALLBACK_FORMAT;
   
   // Convert the DEFAULT_IMAGE_DIRECTORY environment variable.
-  const envDirectoryName:string = await import.meta.env.DEFAULT_IMAGE_DIRECTORY;
+  const envDirectoryName: string | undefined = import.meta.env.DEFAULT_IMAGE_DIRECTORY;
 
   // If envDirectoryName is truthy, use it. Otherwise, default to 'images'.
   const imageDirectory: string = envDirectoryName ? envDirectoryName : 'images';
 
-  const images = import.meta.glob(`/src/**/*`);
+  const imagePath = `/src/${imageDirectory}/${file}`;
+  const loader = images[imagePath];
+  if (!loader) throw new Error(`${imageDirectory}/${file} is not found.`);
 
-  try {
-    const target: unknown = await images[`/src/${imageDirectory}/${file}`]();
+  const target: unknown = await loader();
 
-    if (isImageMetadata(target)) {
-      const targetImage: ImageMetadata = target.default
+  if (isImageMetadata(target)) {
+    const targetImage: ImageMetadata = target.default
 
-      const image = await getImage({
-        src: targetImage,
-        width: width,
-        height: height,
-        format: format ?? envFormat ?? targetImage.format
-      });
+    const image = await getImage({
+      src: targetImage,
+      width: width,
+      height: height,
+      format: format ?? envFormat ?? targetImage.format
+    });
 
-      return image.src;
-    
-    }
-    
-  } catch (error) {
-    // File is not found.
-    throw new Error(`${imageDirectory}/${file} is not found.`);
+    return image.src;
   }
+
+  // File is not found.
+  throw new Error(`${imageDirectory}/${file} is not found.`);
 
 }

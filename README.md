@@ -4,6 +4,8 @@ This component utilizes the **`getImage`** function from **`astro:assets`** to g
 
 By specifying the file, width, and height in the **`src`** object, it outputs responsive images and art direction.
 
+Compatibility: Astro 4.x and 5.x.
+
 ## Install
 
 ```bash
@@ -61,10 +63,19 @@ DEFAULT_GENERATE_FORMAT=avif webp # default : avif webp
 
 This environment variable specifies the output format of the images used in the project as an array. There must be a space between words.
 
+Invalid entries are ignored. The `svg` format is not generated as a raster source.
+
 > [!NOTE]
 > If the environment variable FALLBACK_FORMAT is defined, the DEFAULT_GENERATE_FORMAT array must contain the image format defined there.
 
 ## Chenge log
+
+### 1.1.0
+
+- Output a standalone `img` when no art direction or format fallbacks are needed.
+- Support Astro 4.0 to 5.x (peer dependency range updated).
+- Ignore invalid values in DEFAULT_GENERATE_FORMAT; svg is excluded from generated sources.
+- Improve compatibility with Astro 4.0 typings for background components.
 
 ### 1.0.8
 
