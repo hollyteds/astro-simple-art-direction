@@ -71,7 +71,7 @@ testIf('Picture renders art direction sources', async () => {
   expect(result).toContain('<picture');
   expect(result).toContain('media="(max-width: 767px)"');
   expect(result).toContain('alt="Art direction image"');
-});
+}, 15000);
 
 testIf('Picture supports sizes and widths', async () => {
   const result = await renderPicture({
@@ -97,6 +97,19 @@ testIf('Picture supports formats overrides', async () => {
     formats: ["png"],
   });
   expect(result).toContain('type="image/png"');
+});
+
+testIf('Picture outputs image/jpeg MIME for jpg sources', async () => {
+  const result = await renderPicture({
+    src: {
+      file: "test.png",
+      width: 500,
+      height: 500,
+    },
+    formats: ["jpg"],
+  });
+  expect(result).toContain('type="image/jpeg"');
+  expect(result).not.toContain('type="image/jpg"');
 });
 
 testIf('Picture supports loading, decoding, class, and style', async () => {

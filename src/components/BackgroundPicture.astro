@@ -61,8 +61,23 @@ const { slot, ...restParentProps } = parentProps as typeof parentProps & { slot?
 const cleanedParentProps: Omit<typeof parentProps, 'slot'> & { slot?: string } =
   slot == null ? restParentProps : { ...restParentProps, slot };
 
+const {
+  style: parentInlineStyle,
+  ...restParentAttrs
+} = cleanedParentProps as typeof cleanedParentProps & { style?: string | null };
+
 const { width, height } = size;
 const imageProps = (images ? images : { src, artDirectives, alt, loading, formats, style, decoding }) as picture;
+const containerInlineStyle = typeof parentInlineStyle === 'string'
+  ? parentInlineStyle
+  : (images && typeof style === 'string' ? style : undefined);
+
+const mergedContainerStyle = [
+  containerInlineStyle,
+  `--image-width:${width};--image-height:${height};--attachment:${objectFit};--position:${position};`,
+]
+  .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+  .join(';');
 
 if (!imageProps.src) throw new Error(`The "src" property of the object "image" is undefined.`);
 if (src && import.meta.env.DEV) {
@@ -73,9 +88,9 @@ if (src && import.meta.env.DEV) {
 const Inner: tagName = "div";
 
 ---
-<TagName {...cleanedParentProps}
+<TagName {...restParentAttrs}
   class:list={ [ className, 'bgp']} 
-  style={`--image-width:${width};--image-height:${height};--attachment:${objectFit};--position:${position};`}>
+  style={mergedContainerStyle}>
   <figure aria-hidden="true">
     <Picture {...imageProps}/>
   </figure>

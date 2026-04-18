@@ -1,0 +1,28 @@
+name: compatibility
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - node: 18
+            astro: 4.16.19
+          - node: 20
+            astro: 5.16.11
+          - node: 22
+            astro: 6.1.8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save astro@${{ matrix.astro }}
+      - run: npm test -- --run

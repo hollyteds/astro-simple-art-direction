@@ -20,7 +20,7 @@ export const getFormatImages = async (
   const maxResolutionMultiplier: number = envNumber && envNumber >= 1 && envNumber < 5 ? Math.floor(envNumber) : 2;
 
   // Retrieve the size array from environment variables if available; otherwise, use default values.
-  const listOfWidths: number[] = widths ?? (() => {
+  const listOfWidths: number[] = widths ? [...widths] : (() => {
     const result = [];
     for (let i = 1; i <= maxResolutionMultiplier; i++) {
       result.push(width * i);
@@ -28,9 +28,8 @@ export const getFormatImages = async (
     return result;
   })();
 
-  // If the maximum value is less than the product of the specified size and the maximum resolution multiplier, add the product to the list
-  const maxListSize = listOfWidths.reduce((max, current) => (current > max ? current : max), listOfWidths[0]);
-  if ( maxListSize < width ) listOfWidths.push(width);
+  // Ensure the fallback width is always present even when a custom widths list is passed.
+  if (!listOfWidths.includes(width)) listOfWidths.push(width);
 
   // Generate the default image.
   imagesByWidth['default'] = await getImage({
@@ -49,6 +48,12 @@ export const getFormatImages = async (
     
     // Defining the generate size: if the maximum size, use the maximum resolution; otherwise, use the current size from the list.
     let generateSize = isMaxSize ? width * maxResolutionMultiplier : listOfWidths[i];
+
+    // Reuse the default image when the generated width equals the fallback width.
+    if (generateSize === width) {
+      imagesByWidth[`${generateSize}w`] = imagesByWidth.default;
+      continue;
+    }
 
     // Generate the image with the determined width and add it to the formatImages object.
     imagesByWidth[`${generateSize}w`] = await getImage({

@@ -44,6 +44,12 @@ const supportedFormats = [
 const isFormat = (value: string): value is format =>
   (supportedFormats as readonly string[]).includes(value);
 
+const getMimeType = (value: format): string => {
+  if (value === 'jpg') return 'image/jpeg';
+  if (value === 'svg') return 'image/svg+xml';
+  return `image/${value}`;
+};
+
 const parseEnvFormats = (value?: string): format[] => {
   if (!value) return [];
   return value
@@ -151,7 +157,7 @@ const shouldRenderPicture = mediaImages.length > 0 || hasFormatSources;
                   <source
                     {...mediaImage.attributes}
                     srcset={generateSrcset(formatImages)}
-                    type={"image/" + format}
+                    type={getMimeType(format)}
                   />
                 );
               })
@@ -171,7 +177,7 @@ const shouldRenderPicture = mediaImages.length > 0 || hasFormatSources;
           <source
             {...mainAttributes}
             srcset={generateSrcset(formatImages)}
-            type={"image/" + format}
+            type={getMimeType(format)}
           />
         );
     })

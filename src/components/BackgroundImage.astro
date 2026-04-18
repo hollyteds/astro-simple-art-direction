@@ -21,10 +21,19 @@ const { slot, ...restProps } = props as typeof props & { slot?: string | null };
 const cleanedProps: Omit<typeof props, 'slot'> & { slot?: string } =
   slot == null ? restProps : { ...restProps, slot };
 
+const {
+  style: inlineStyle,
+  ...restCleanedProps
+} = cleanedProps as typeof cleanedProps & { style?: string | null };
+
 const {src, format } = image;
 
 const backgroundImage = await getBackground(src, format);
+
+const mergedStyle = [inlineStyle, `background-image: url(${backgroundImage});`]
+  .filter((value): value is string => typeof value === 'string' && value.trim().length > 0)
+  .join(';');
 ---
-<TagName {...cleanedProps} style={`background-image: url(${backgroundImage});`}>
+<TagName {...restCleanedProps} style={mergedStyle}>
   <slot/>
 </TagName>
