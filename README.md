@@ -4,7 +4,7 @@ This component utilizes the **`getImage`** function from **`astro:assets`** to g
 
 By specifying the file, width, and height in the **`src`** object, it outputs responsive images and art direction.
 
-Compatibility: Astro 4.x, 5.x and 6.x (tested on 6.1.8).
+Compatibility: Astro 4.x, 5.x, 6.x and 7.x (tested on 7.2.4).
 
 ## Install
 
@@ -69,6 +69,12 @@ Invalid entries are ignored. The `svg` format is not generated as a raster sourc
 > If the environment variable FALLBACK_FORMAT is defined, the DEFAULT_GENERATE_FORMAT array must contain the image format defined there.
 
 ## Chenge log
+
+### 1.1.2
+
+- Add support range for Astro 7.x and verify compatibility with Astro 7.2.4.
+- Update the development environment to Astro 7.2.4 and @astrojs/check 0.9.10.
+- Exclude the Vitest configuration from Astro type checking.
 
 ### 1.1.1
 
